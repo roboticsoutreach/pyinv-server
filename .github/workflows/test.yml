@@ -1,0 +1,43 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: [3.8, 3.9, "3.10"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/cache@v2
+        with:
+          path: venv/
+          key: ${{ runner.os }}-${{ matrix.python }}-pip-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements-dev.txt') }}
+      - name: Create virtualenv
+        run: python3 -m venv venv
+      - name: Use virtualenv
+        run: source venv/bin/activate
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Use the dev configuration
+        run: cp pyinv/pyinv/configuration.dev.py pyinv/pyinv/configuration.py
+      - name: Lint
+        run: make lint
+      # - name: Static type checking
+      #   run: make type
+      - name: Unit tests
+        run: make test
+      - name: Django Static Checks
+        run: make check
+      # - name: Build Documentation
+      #   run: make docs
