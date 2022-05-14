@@ -1,2 +1,2 @@
 [tool.coverage.report]
-omit = ["pyinv/*/tests/*", "pyinv/*/migrations/*"]
+omit = ["pyinv_server/*/tests/*", "pyinv_server/*/migrations/*"]
