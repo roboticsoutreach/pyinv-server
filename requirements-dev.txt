@@ -14,6 +14,8 @@ coverage[toml]==6.3.3
     # via -r requirements-dev.in
 django==3.2.13
     # via -r requirements.txt
+django-autoslug==1.9.8
+    # via -r requirements.txt
 flake8==4.0.1
     # via
     #   -r requirements-dev.in
