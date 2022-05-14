@@ -14,6 +14,9 @@ lint:
 check:
 	$(MANAGEPY) check
 
+dev:
+	$(MANAGEPY) runserver
+
 docs:
 	$(CMD) sphinx-build $(SPHINX_ARGS)
 
