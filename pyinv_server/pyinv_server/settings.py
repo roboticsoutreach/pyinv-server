@@ -178,3 +178,6 @@ LOGIN_URL = '/{}login/'.format(BASE_PATH)
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DAMM32_ASSET_CODE_DEFAULT_PREFIX = getattr(configuration, 'DAMM32_ASSET_CODE_DEFAULT_PREFIX', 'INV')
+DAMM32_ASSET_CODE_PREFIXES = getattr(configuration, 'DAMM32_ASSET_CODE_DEFAULT_PREFIX', ['INV'])
