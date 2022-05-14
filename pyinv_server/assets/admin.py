@@ -15,7 +15,7 @@ class AssetAdmin(admin.ModelAdmin):
 
 
 class AssetCodeAdmin(admin.ModelAdmin):
-    list_display = ["code", "code_type"]
+    list_display = ["code", "code_type", "asset"]
     list_filter = ["code_type"]
     search_fields = ["code"]
 
