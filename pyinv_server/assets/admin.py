@@ -4,7 +4,7 @@ from .models import Asset, AssetCode, AssetModel, Manufacturer
 
 
 class AssetAdmin(admin.ModelAdmin):
-    list_display = ["name", "asset_model", "state"]
+    list_display = ["name", "asset_model", "state", "first_asset_code"]
     list_filter = ["asset_model", "state"]
     readonly_fields = ["created_at", "updated_at", "id"]
     search_fields = [
