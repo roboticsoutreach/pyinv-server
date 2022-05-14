@@ -17,7 +17,6 @@ class TestAssetModel(TestCase):
             name="Honey Pot",
             is_container=False,
             manufacturer=self.manufacturer,
-            notes="Sticky",
         )
 
     def test_set_slug_automatically(self) -> None:

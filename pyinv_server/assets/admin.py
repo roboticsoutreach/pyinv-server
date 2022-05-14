@@ -1,6 +1,12 @@
 from django.contrib import admin
 
-from .models import AssetModel, Manufacturer
+from .models import AssetCode, AssetModel, Manufacturer
+
+
+class AssetCodeAdmin(admin.ModelAdmin):
+    list_display = ["code", "code_type"]
+    list_filter = ["code_type"]
+    search_fields = ["code"]
 
 
 class AssetModelAdmin(admin.ModelAdmin):
@@ -14,5 +20,6 @@ class ManufacturerAdmin(admin.ModelAdmin):
     search_fields = ["name"]
 
 
+admin.site.register(AssetCode, AssetCodeAdmin)
 admin.site.register(AssetModel, AssetModelAdmin)
 admin.site.register(Manufacturer, ManufacturerAdmin)
