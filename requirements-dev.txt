@@ -12,6 +12,8 @@ attrs==21.4.0
     # via flake8-bugbear
 coverage[toml]==6.3.3
     # via -r requirements-dev.in
+damm32==1.2.1
+    # via -r requirements.txt
 django==3.2.13
     # via -r requirements.txt
 django-autoslug==1.9.8
