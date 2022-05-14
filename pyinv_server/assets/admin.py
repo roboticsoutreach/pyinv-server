@@ -10,7 +10,7 @@ class AssetCodeAdmin(admin.ModelAdmin):
 
 
 class AssetModelAdmin(admin.ModelAdmin):
-    list_display = ["name", "manufacturer", "is_container"]
+    list_display = ["name", "slug", "manufacturer", "is_container"]
     list_filter = ["is_container"]
     search_fields = ["name", "manufacturer__name", "notes"]
 
