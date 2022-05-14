@@ -33,5 +33,14 @@ class Asset(models.Model):
         else:
             return self.name
 
+    @property
+    def first_asset_code(self) -> str:
+        """A usable asset code for the asset."""
+        code = self.assetcode_set.first()
+        if code is None:
+            return str(self.id)
+        else:
+            return code.code
+
     def __str__(self) -> str:
-        return self.display_name  # TODO: Add Asset Code
+        return f"{self.display_name} ({self.first_asset_code})"
