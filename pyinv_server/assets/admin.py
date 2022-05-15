@@ -37,8 +37,15 @@ class ManufacturerAdmin(admin.ModelAdmin):
     search_fields = ["name"]
 
 
-admin.site.register(Asset, AssetAdmin)
-admin.site.register(AssetCode, AssetCodeAdmin)
-admin.site.register(AssetModel, AssetModelAdmin)
-admin.site.register(Location, LocationAdmin)
-admin.site.register(Manufacturer, ManufacturerAdmin)
+class PyInvAdminSite(admin.AdminSite):
+    site_header = 'PyInv Administration'
+    site_title = 'PyInv Administration'
+    index_title = 'PyInv Admin Panel'
+
+
+admin_site = PyInvAdminSite()
+admin_site.register(Asset, AssetAdmin)
+admin_site.register(AssetCode, AssetCodeAdmin)
+admin_site.register(AssetModel, AssetModelAdmin)
+admin_site.register(Location, LocationAdmin)
+admin_site.register(Manufacturer, ManufacturerAdmin)
