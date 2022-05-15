@@ -17,10 +17,16 @@ damm32==1.2.1
 django==3.2.13
     # via
     #   -r requirements.txt
+    #   django-filter
     #   django-treebeard
+    #   djangorestframework
 django-autoslug==1.9.8
     # via -r requirements.txt
+django-filter==21.1
+    # via -r requirements.txt
 django-treebeard==4.5.1
+    # via -r requirements.txt
+djangorestframework==3.13.1
     # via -r requirements.txt
 flake8==4.0.1
     # via
@@ -62,6 +68,7 @@ pytz==2022.1
     # via
     #   -r requirements.txt
     #   django
+    #   djangorestframework
 sqlparse==0.4.2
     # via
     #   -r requirements.txt

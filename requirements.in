@@ -1,4 +1,6 @@
 django>3.2,<3.3  # LTS
 django-autoslug
+django-filter
+djangorestframework
 django-treebeard
 damm32
