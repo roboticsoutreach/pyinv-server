@@ -8,12 +8,17 @@ from .models import Asset, AssetCode, AssetModel, Location, Manufacturer
 class AssetAdmin(admin.ModelAdmin):
     list_display = ["name", "asset_model", "state", "first_asset_code"]
     list_filter = ["asset_model", "state"]
-    readonly_fields = ["created_at", "updated_at", "id"]
+    readonly_fields = ["id", "asset_codes", "created_at", "updated_at"]
     search_fields = [
         "name",
         "asset_model__name",
         "asset_model__manufacturer__name",
     ]
+
+    @admin.display()
+    def asset_codes(self, obj):
+        """Display all linked asset codes."""
+        return ", ".join(obj.asset_codes)
 
 
 class AssetCodeAdmin(admin.ModelAdmin):

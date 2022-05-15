@@ -1,4 +1,5 @@
 import uuid
+from typing import List
 
 from django.db import models
 
@@ -43,6 +44,11 @@ class Asset(models.Model):
             return str(self.id)
         else:
             return code.code
+
+    @property
+    def asset_codes(self) -> List[str]:
+        """A list of all asset codes for the asset."""
+        return [code.code for code in self.assetcode_set.all()]
 
     def __str__(self) -> str:
         return f"{self.display_name} ({self.first_asset_code})"
