@@ -105,6 +105,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third Party
+    'rest_framework',
     'treebeard',
 
     # First Party
@@ -183,6 +184,16 @@ LOGIN_URL = '/{}login/'.format(BASE_PATH)
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# REST Framework
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 DAMM32_ASSET_CODE_DEFAULT_PREFIX = getattr(configuration, 'DAMM32_ASSET_CODE_DEFAULT_PREFIX', 'INV')
 DAMM32_ASSET_CODE_PREFIXES = getattr(configuration, 'DAMM32_ASSET_CODE_DEFAULT_PREFIX', ['INV'])
