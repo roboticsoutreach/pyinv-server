@@ -1,4 +1,4 @@
-from assets.models import Asset, AssetCode, AssetModel, Manufacturer
+from assets.models import Asset, AssetCode, AssetModel, Location, Manufacturer
 from django.db import IntegrityError
 from django.forms import ValidationError
 from django.test import TestCase
@@ -8,11 +8,13 @@ class TestAssetCodeModel(TestCase):
 
     def setUp(self) -> None:
         """Set up the test."""
+        self.location = Location(name="bees")
+        self.location.save()
         self.manufacturer = Manufacturer(name="foo")
         self.manufacturer.save()
         self.asset_model = AssetModel(name="bar", manufacturer=self.manufacturer)
         self.asset_model.save()
-        self.asset = Asset(name="foo", asset_model=self.asset_model)
+        self.asset = Asset(name="foo", asset_model=self.asset_model, location=self.location)
         self.asset.save()
 
     def test_no_duplicate_code(self) -> None:

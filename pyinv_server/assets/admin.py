@@ -1,6 +1,8 @@
 from django.contrib import admin
+from treebeard.admin import TreeAdmin
+from treebeard.forms import movenodeform_factory
 
-from .models import Asset, AssetCode, AssetModel, Manufacturer
+from .models import Asset, AssetCode, AssetModel, Location, Manufacturer
 
 
 class AssetAdmin(admin.ModelAdmin):
@@ -26,6 +28,10 @@ class AssetModelAdmin(admin.ModelAdmin):
     search_fields = ["name", "manufacturer__name", "notes"]
 
 
+class LocationAdmin(TreeAdmin):
+    form = movenodeform_factory(Location)
+
+
 class ManufacturerAdmin(admin.ModelAdmin):
     list_display = ["name", "slug"]
     search_fields = ["name"]
@@ -34,4 +40,5 @@ class ManufacturerAdmin(admin.ModelAdmin):
 admin.site.register(Asset, AssetAdmin)
 admin.site.register(AssetCode, AssetCodeAdmin)
 admin.site.register(AssetModel, AssetModelAdmin)
+admin.site.register(Location, LocationAdmin)
 admin.site.register(Manufacturer, ManufacturerAdmin)

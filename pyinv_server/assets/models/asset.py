@@ -22,6 +22,8 @@ class Asset(models.Model):
         default=State.KNOWN,
     )
 
+    location = models.ForeignKey('assets.Location', on_delete=models.PROTECT, related_name="contents")
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     extra_data = models.JSONField(default=dict, blank=True)
