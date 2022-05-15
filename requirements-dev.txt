@@ -15,8 +15,12 @@ coverage[toml]==6.3.3
 damm32==1.2.1
     # via -r requirements.txt
 django==3.2.13
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   django-treebeard
 django-autoslug==1.9.8
+    # via -r requirements.txt
+django-treebeard==4.5.1
     # via -r requirements.txt
 flake8==4.0.1
     # via
