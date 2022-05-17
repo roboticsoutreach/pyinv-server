@@ -23,11 +23,28 @@ class Asset(models.Model):
         default=State.KNOWN,
     )
 
-    location = models.ForeignKey('assets.Location', on_delete=models.PROTECT, related_name="contents")
+    location = models.ForeignKey(
+        'assets.Location',
+        on_delete=models.PROTECT,
+        related_name="contents",
+        null=True,
+        blank=True,
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     extra_data = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(state="K", location__isnull=False) |
+                models.Q(state="L", location__isnull=True) |
+                models.Q(state="D", location__isnull=True),
+                name='valid_state',
+            ),
+        ]
 
     @property
     def display_name(self) -> str:
