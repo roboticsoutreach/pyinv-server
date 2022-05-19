@@ -2,7 +2,15 @@ from django.contrib import admin
 from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
 
-from .models import Asset, AssetCode, AssetModel, Location, Manufacturer
+from .models import (
+    Asset,
+    AssetCode,
+    AssetEvent,
+    AssetModel,
+    Changeset,
+    Location,
+    Manufacturer,
+)
 
 
 class AssetAdmin(admin.ModelAdmin):
@@ -33,6 +41,14 @@ class AssetModelAdmin(admin.ModelAdmin):
     search_fields = ["name", "manufacturer__name", "notes"]
 
 
+class AssetEventAdmin(admin.ModelAdmin):
+    list_display = ["asset", "event_type", "changeset"]
+
+
+class ChangesetAdmin(admin.ModelAdmin):
+    list_display = ["timestamp", "user", "comment"]
+
+
 class LocationAdmin(TreeAdmin):
     form = movenodeform_factory(Location)
 
@@ -51,6 +67,8 @@ class PyInvAdminSite(admin.AdminSite):
 admin_site = PyInvAdminSite()
 admin_site.register(Asset, AssetAdmin)
 admin_site.register(AssetCode, AssetCodeAdmin)
+admin_site.register(AssetEvent, AssetEventAdmin)
 admin_site.register(AssetModel, AssetModelAdmin)
+admin_site.register(Changeset, ChangesetAdmin)
 admin_site.register(Location, LocationAdmin)
 admin_site.register(Manufacturer, ManufacturerAdmin)
