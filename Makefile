@@ -1,7 +1,7 @@
 .PHONY: all clean docs docs-serve lint type test test-cov
 
 CMD:=
-PYMODULE:=pyinv_server
+PYMODULE:=pyinv
 MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
 APPS:=
 SPHINX_ARGS:=docs/ docs/_build -nWE

@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Use the dev configuration
-        run: cp pyinv_server/pyinv_server/configuration.dev.py pyinv_server/pyinv_server/configuration.py
+        run: cp pyinv/pyinv/configuration.dev.py pyinv/pyinv/configuration.py
       - name: Lint
         run: make lint
       # - name: Static type checking

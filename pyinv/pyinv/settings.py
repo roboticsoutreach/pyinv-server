@@ -28,11 +28,11 @@ if parse_version(platform.python_version()) < parse_version("3.8.0"):
 
 # Import configuration parameters
 try:
-    from pyinv_server import configuration
+    from pyinv import configuration
 except ImportError as e:
     if getattr(e, 'name') == 'configuration':
         raise ImproperlyConfigured(
-            "Configuration file is not present. Please define pyinv_server/pyinv_server/configuration.py per the documentation."  # noqa: E501
+            "Configuration file is not present. Please define pyinv/pyinv/configuration.py per the documentation."  # noqa: E501
         ) from None
     raise
 
@@ -122,7 +122,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'pyinv_server.urls'
+ROOT_URLCONF = 'pyinv.urls'
 
 TEMPLATES = [
     {
@@ -140,7 +140,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pyinv_server.wsgi.application'
+WSGI_APPLICATION = 'pyinv.wsgi.application'
 
 
 # Password validation

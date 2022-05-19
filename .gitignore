@@ -1,5 +1,5 @@
-pyinv_server/pyinv_server/configuration.py
-pyinv_server/db.sqlite
+pyinv/pyinv/configuration.py
+pyinv/db.sqlite
 
 ### Django ###
 *.log
