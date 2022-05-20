@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
 
@@ -72,3 +74,4 @@ admin_site.register(AssetModel, AssetModelAdmin)
 admin_site.register(Changeset, ChangesetAdmin)
 admin_site.register(Location, LocationAdmin)
 admin_site.register(Manufacturer, ManufacturerAdmin)
+admin_site.register(User, UserAdmin)

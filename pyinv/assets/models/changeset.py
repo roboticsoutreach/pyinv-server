@@ -8,7 +8,7 @@ class Changeset(models.Model):
     """A group of changes that occurred at the same time."""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  # noqa: A003
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     comment = models.TextField(blank=True)
 
