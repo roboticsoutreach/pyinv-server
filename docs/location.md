@@ -31,3 +31,9 @@ When creating a location, the following steps need to be taken:
   - Check that the asset is in a *KNOWN* state
   - Check that the asset is not already linked to a location.
 - Create a location object and set the parent if necessary.
+
+### Moving a location
+
+If the location is linked to an asset, refer to the section on moving an asset with a linked location.
+
+Otherwise, you must create a new location. The old location should be deleted when it is empty.
