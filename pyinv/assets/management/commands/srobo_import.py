@@ -24,19 +24,24 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('data_folder', type=Path)
 
-    def get_asset_by_code(self, code) -> Asset:
-        code = AssetCode.objects.get(code=code)
-        return code.asset
+    def get_location(self, ref: str) -> Location:
+        linked_asset = Asset.get_by_code(ref)
+        if linked_asset is not None:
+            # Check if the location already exists
+            try:
+                return linked_asset.linked_location
+            except Asset.linked_location.RelatedObjectDoesNotExist:
+                # Set the asset model to be a container if it is not already
+                if not linked_asset.asset_model.is_container:
+                    linked_asset.asset_model.is_container = True
+                    linked_asset.asset_model.save()
 
-    def get_location(self, ref) -> Location:
-        try:
-            parent_asset = self.get_asset_by_code(ref)
-            if not parent_asset.asset_model.is_container:
-                parent_asset.asset_model.is_container = True
-                parent_asset.asset_model.save()
-            location, _ = Location.objects.get_or_create(asset=parent_asset)
-            return location
-        except AssetCode.DoesNotExist:
+                # Create the new location
+                return Location.objects.create(
+                    parent=linked_asset.location,
+                    asset=linked_asset,
+                )
+        else:
             if ref.startswith("sr"):
                 loc, _ = Location.objects.get_or_create(name="unknown")
                 return loc
@@ -79,11 +84,11 @@ class Command(BaseCommand):
             for event in data["events"]:
                 if event["event"] == "add":
                     self._handle_add_asset_event(cs, event)
-                elif event["event"] == "move":
-                    self._handle_move_asset_event(cs, event)
+                # elif event["event"] == "move":
+                #     self._handle_move_asset_event(cs, event)
 
     def _handle_move_asset_event(self, cs, event) -> None:
-        asset = self.get_asset_by_code(event["asset_code"])
+        asset = Asset.get_by_code(event["asset_code"])
         location = self.get_location(event["new_location"])
         asset.location = location
         asset.save()
