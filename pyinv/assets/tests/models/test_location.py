@@ -86,12 +86,12 @@ class TestALocationModel(TestCase):
     def test_location_str_unlinked(self) -> None:
         """Test the __str__ of an unlinked location."""
         location = Location(name="bees")
-        self.assertEqual(str(location), "Location: bees")
+        self.assertEqual(str(location), "bees")
 
     def test_location_str_linked(self) -> None:
         """Test the __str__ of a linked location."""
         location = Location(asset=self.container)
-        self.assertRegexpMatches(str(location), "Asset: foo.*")
+        self.assertRegexpMatches(str(location), ".*-foo")
 
     def test_location_unlinked_must_have_name(self) -> None:
         """Test that an unlinked location must have a name."""

@@ -33,9 +33,12 @@ class Location(AL_Node):
 
     def __str__(self):
         if self.asset is None:
-            return f'Location: {self.name}'
+            if self.parent:
+                return f"{self.parent}/{self.name}"
+            else:
+                return self.name
         else:
-            return f'Asset: {self.asset}'
+            return f'{self.parent}/{self.asset.first_asset_code}-{self.asset.display_name}'
 
     def clean(self):
         if self.asset is not None:
