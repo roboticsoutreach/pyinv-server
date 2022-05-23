@@ -1,5 +1,5 @@
 import uuid
-from typing import List
+from typing import List, Optional
 
 from django.db import models
 
@@ -69,3 +69,8 @@ class Asset(models.Model):
 
     def __str__(self) -> str:
         return f"{self.display_name} ({self.first_asset_code})"
+
+    @classmethod
+    def get_by_code(cls, code: str) -> Optional['Asset']:
+        """Get an asset by its asset code."""
+        return cls.objects.filter(assetcode__code=code).first()
