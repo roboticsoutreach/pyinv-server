@@ -16,6 +16,14 @@ The asset must be stored in the parent of the linked location.
 
 ### Moving an Asset
 
+- If asset has a linked_location:
+   - Change the parent of the linked location
+   - Change the location of the asset
+- Otherwise:
+    - Create a new location
+    - Change the location of the asset
+    - Check if the old location is empty, if so delete it
+
 ### Moving an Asset with a Linked Location
 
 ### Marking Lost or Disposed

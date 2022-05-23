@@ -24,7 +24,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('data_folder', type=Path)
 
-    def get_location(self, ref: str) -> Location:
+    def get_location(self, ref: str, create_if_not_exists: bool = True) -> Location:
         linked_asset = Asset.get_by_code(ref)
         if linked_asset is not None:
             # Check if the location already exists
@@ -41,13 +41,16 @@ class Command(BaseCommand):
                     parent=linked_asset.location,
                     asset=linked_asset,
                 )
-        else:
+        elif create_if_not_exists:
             if ref.startswith("sr"):
-                loc, _ = Location.objects.get_or_create(name="unknown")
+                self.stderr.write(f"Unknown linked_location reference: {ref}")
+                loc, _ = Location.objects.get_or_create(name="unknown-ref-srobo-import")
                 return loc
             else:
                 parts = ref.split("/")
                 return self.get_non_asset_location(parts)
+        else:
+            raise RuntimeError(f"Location {ref} does not exist!")
 
     def get_non_asset_location(self, parts: List[str], parent=None) -> None:
         top_level = parts.pop(0)
@@ -58,6 +61,18 @@ class Command(BaseCommand):
             return self.get_non_asset_location(parts, location)
         else:
             return location
+
+    def _check_empty_location(self, location: Location) -> None:
+        """
+        Check if the location is empty.
+
+        If it is, delete it!
+        """
+        # We need to check for None here, in case it was previously deleted in a cleanup.
+        if location and location.contents.count() == 0 and location.children_set.count() == 0:
+            self.stdout.write(f"Deleting {location}")
+            location.delete()
+            self._check_empty_location(location.parent)
 
     def handle(self, *args, **options):
         data_folder: Path = options['data_folder']
@@ -84,21 +99,35 @@ class Command(BaseCommand):
             for event in data["events"]:
                 if event["event"] == "add":
                     self._handle_add_asset_event(cs, event)
-                # elif event["event"] == "move":
-                #     self._handle_move_asset_event(cs, event)
+                elif event["event"] == "move":
+                    self._handle_move_asset_event(cs, event)
 
     def _handle_move_asset_event(self, cs, event) -> None:
         asset = Asset.get_by_code(event["asset_code"])
-        location = self.get_location(event["new_location"])
-        asset.location = location
-        asset.save()
+        new_location = self.get_location(event["new_location"])
+        if asset is not None:
+            try:
+                ll = asset.linked_location
+                ll.parent = new_location
+                ll.save()
+            except Asset.linked_location.RelatedObjectDoesNotExist:
+                pass
 
-        AssetEvent.objects.create(
-            changeset=cs,
-            event_type="M",
-            asset=asset,
-            data=event,
-        )
+            asset.location = new_location
+            asset.save()
+
+            # Fetch the old location after the tree has updated.
+            old_location = self.get_location(event["old_location"])
+            self._check_empty_location(old_location)
+
+            AssetEvent.objects.create(
+                changeset=cs,
+                event_type="M",
+                asset=asset,
+                data=event,
+            )
+        else:
+            self.stderr.write("Unable to find asset for move event")
 
     def _handle_add_asset_event(self, cs, event) -> None:
         asset_data = event["asset"]

@@ -24,7 +24,7 @@ class Command(BaseCommand):
         for location in Location.objects.all():
             if location:
                 # check for loop
-                self.assertCondition(location.parent_id != location.id, f"Location {location} has a loop")
+                self.assertCondition(location.parent_id != location.id, "Location has a loop")
 
                 # check that linked asset is valid
                 if location.asset:
