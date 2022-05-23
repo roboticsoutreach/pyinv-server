@@ -24,14 +24,17 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('data_folder', type=Path)
 
+    def get_asset_by_code(self, code) -> Asset:
+        code = AssetCode.objects.get(code=code)
+        return code.asset
+
     def get_location(self, ref) -> Location:
         try:
-            code = AssetCode.objects.get(code=ref)
-            parent_asset = code.asset
+            parent_asset = self.get_asset_by_code(ref)
             if not parent_asset.asset_model.is_container:
                 parent_asset.asset_model.is_container = True
                 parent_asset.asset_model.save()
-            location, _ = Location.objects.get_or_create(parent=parent_asset.location, asset=parent_asset)
+            location, _ = Location.objects.get_or_create(asset=parent_asset)
             return location
         except AssetCode.DoesNotExist:
             if ref.startswith("sr"):
@@ -55,7 +58,7 @@ class Command(BaseCommand):
         data_folder: Path = options['data_folder']
         self.stdout.write(f"Importing from {data_folder}")
 
-        manufacturer, _ = Manufacturer.objects.get_or_create(name="Unknown")
+        self._default_manufacturer, _ = Manufacturer.objects.get_or_create(name="Unknown")
 
         for file in sorted(data_folder.glob("*.yaml")):
             self.stdout.write(f"Processing {file}")
@@ -75,30 +78,47 @@ class Command(BaseCommand):
 
             for event in data["events"]:
                 if event["event"] == "add":
-                    asset_data = event["asset"]
-                    print("Adding", asset_data)
+                    self._handle_add_asset_event(cs, event)
+                elif event["event"] == "move":
+                    self._handle_move_asset_event(cs, event)
 
-                    location = self.get_location(asset_data["location"])
-                    asset_model, _ = AssetModel.objects.get_or_create(
-                        name=asset_data["asset_type"],
-                        manufacturer=manufacturer,
-                    )
+    def _handle_move_asset_event(self, cs, event) -> None:
+        asset = self.get_asset_by_code(event["asset_code"])
+        location = self.get_location(event["new_location"])
+        asset.location = location
+        asset.save()
 
-                    asset = Asset.objects.create(
-                        asset_model=asset_model,
-                        state="K",
-                        location=location,
-                        extra_data=asset_data["data"],
-                    )
+        AssetEvent.objects.create(
+            changeset=cs,
+            event_type="M",
+            asset=asset,
+            data=event,
+        )
 
-                    try:
-                        AssetCode.objects.get_or_create(asset=asset, code=asset_data["asset_code"], code_type="A")
-                    except IntegrityError:
-                        pass
+    def _handle_add_asset_event(self, cs, event) -> None:
+        asset_data = event["asset"]
 
-                    AssetEvent.objects.create(
-                        changeset=cs,
-                        event_type="A",
-                        asset=asset,
-                        data=event,
-                    )
+        location = self.get_location(asset_data["location"])
+        asset_model, _ = AssetModel.objects.get_or_create(
+            name=asset_data["asset_type"],
+            manufacturer=self._default_manufacturer,
+        )
+
+        asset = Asset.objects.create(
+            asset_model=asset_model,
+            state="K",
+            location=location,
+            extra_data=asset_data["data"],
+        )
+
+        try:
+            AssetCode.objects.get_or_create(asset=asset, code=asset_data["asset_code"], code_type="A")
+        except IntegrityError:
+            print("WARNING: You have run the import multiple times!")
+
+        AssetEvent.objects.create(
+            changeset=cs,
+            event_type="A",
+            asset=asset,
+            data=event,
+        )
