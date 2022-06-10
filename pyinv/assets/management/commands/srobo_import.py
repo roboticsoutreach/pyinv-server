@@ -101,10 +101,30 @@ class Command(BaseCommand):
                     self._handle_add_asset_event(cs, event)
                 elif event["event"] == "move":
                     self._handle_move_asset_event(cs, event)
+                    pass
+                elif event["event"] == "dispose":
+                    self._handle_dispose_asset_event(cs, event)
+                elif event["event"] == "restore":
+                    pass
+                elif event["event"] == "change":
+                    pass
+
+    def _handle_dispose_asset_event(self, cs, event) -> None:
+        asset = Asset.get_by_code(event["asset_code"])
+        if asset:
+            asset.mark_disposed()
+
+            AssetEvent.objects.create(
+                changeset=cs,
+                event_type="U",
+                asset=asset,
+                data={"action": "dispose"},
+            )
 
     def _handle_move_asset_event(self, cs, event) -> None:
         asset = Asset.get_by_code(event["asset_code"])
         new_location = self.get_location(event["new_location"])
+
         if asset is not None:
             try:
                 ll = asset.linked_location
@@ -113,6 +133,7 @@ class Command(BaseCommand):
             except Asset.linked_location.RelatedObjectDoesNotExist:
                 pass
 
+            asset.state = "K"  # We can assume that it is in a known location  # TODO: Add event
             asset.location = new_location
             asset.save()
 

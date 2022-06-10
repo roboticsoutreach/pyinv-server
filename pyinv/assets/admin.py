@@ -45,6 +45,7 @@ class AssetModelAdmin(admin.ModelAdmin):
 
 class AssetEventAdmin(admin.ModelAdmin):
     list_display = ["asset", "event_type", "changeset"]
+    list_filter = ["event_type"]
 
 
 class ChangesetAdmin(admin.ModelAdmin):
