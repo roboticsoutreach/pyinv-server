@@ -1,4 +1,5 @@
 from json import loads
+import json
 from pathlib import Path
 from typing import List
 
@@ -22,9 +23,33 @@ class Command(BaseCommand):
     help = 'Import assets from Student Robotics JSON format'  # noqa: A003
 
     def add_arguments(self, parser):
-        parser.add_argument('data_folder', type=Path)
+        parser.add_argument('data_file', type=Path)
 
-    def get_location(self, ref: str, create_if_not_exists: bool = True) -> Location:
+    def handle(self, *args, **options):
+        data_file: Path = options['data_file']
+        self.stdout.write(f"Importing from {data_file}")
+
+        data = json.loads(data_file.read_text())
+
+        self._default_manufacturer, _ = Manufacturer.objects.get_or_create(name="Unknown")
+
+        # First Pass
+        for ref, object in data.items():
+            if object["type"] == "asset":
+                self._add_asset(object["data"])
+            elif object["type"] == "location":
+                pass
+            else:
+                raise ValueError(f"Unknown object type {object['type']}")
+
+        # Second Pass
+        for asset in Asset.objects.all():
+            asset.location = self.get_location(data, data[asset.first_asset_code]["data"]["location"])
+            asset.state = "K"
+            asset.save()
+
+
+    def get_location(self, data, ref: str, create_if_not_exists: bool = True) -> Location:
         linked_asset = Asset.get_by_code(ref)
         if linked_asset is not None:
             # Check if the location already exists
@@ -35,6 +60,12 @@ class Command(BaseCommand):
                 if not linked_asset.asset_model.is_container:
                     linked_asset.asset_model.is_container = True
                     linked_asset.asset_model.save()
+
+                # Move the asset
+                if linked_asset.location is None:
+                    linked_asset.state = "K"
+                    linked_asset.location = self.get_location(data, data[linked_asset.first_asset_code]["data"]["location"])
+                    linked_asset.save()
 
                 # Create the new location
                 return Location.objects.create(
@@ -62,118 +93,20 @@ class Command(BaseCommand):
         else:
             return location
 
-    def _check_empty_location(self, location: Location) -> None:
-        """
-        Check if the location is empty.
-
-        If it is, delete it!
-        """
-        # We need to check for None here, in case it was previously deleted in a cleanup.
-        if location and location.contents.count() == 0 and location.children_set.count() == 0:
-            self.stdout.write(f"Deleting {location}")
-            location.delete()
-            self._check_empty_location(location.parent)
-
-    def handle(self, *args, **options):
-        data_folder: Path = options['data_folder']
-        self.stdout.write(f"Importing from {data_folder}")
-
-        self._default_manufacturer, _ = Manufacturer.objects.get_or_create(name="Unknown")
-
-        for file in sorted(data_folder.glob("*.yaml")):
-            self.stdout.write(f"Processing {file}")
-            data = loads(file.read_text())
-
-            user, _ = User.objects.get_or_create(
-                username=data['user'],
-                email=data['user'],
-                is_active=False,
-            )
-
-            cs = Changeset.objects.create(
-                timestamp=dateparse.parse_datetime(data["timestamp"] + "Z"),
-                user=user,
-                comment=data["comment"],
-            )
-
-            for event in data["events"]:
-                if event["event"] == "add":
-                    self._handle_add_asset_event(cs, event)
-                elif event["event"] == "move":
-                    self._handle_move_asset_event(cs, event)
-                    pass
-                elif event["event"] == "dispose":
-                    self._handle_dispose_asset_event(cs, event)
-                elif event["event"] == "restore":
-                    pass
-                elif event["event"] == "change":
-                    pass
-
-    def _handle_dispose_asset_event(self, cs, event) -> None:
-        asset = Asset.get_by_code(event["asset_code"])
-        if asset:
-            asset.mark_disposed()
-
-            AssetEvent.objects.create(
-                changeset=cs,
-                event_type="U",
-                asset=asset,
-                data={"action": "dispose"},
-            )
-
-    def _handle_move_asset_event(self, cs, event) -> None:
-        asset = Asset.get_by_code(event["asset_code"])
-        new_location = self.get_location(event["new_location"])
-
-        if asset is not None:
-            try:
-                ll = asset.linked_location
-                ll.parent = new_location
-                ll.save()
-            except Asset.linked_location.RelatedObjectDoesNotExist:
-                pass
-
-            asset.state = "K"  # We can assume that it is in a known location  # TODO: Add event
-            asset.location = new_location
-            asset.save()
-
-            # Fetch the old location after the tree has updated.
-            old_location = self.get_location(event["old_location"])
-            self._check_empty_location(old_location)
-
-            AssetEvent.objects.create(
-                changeset=cs,
-                event_type="M",
-                asset=asset,
-                data=event,
-            )
-        else:
-            self.stderr.write("Unable to find asset for move event")
-
-    def _handle_add_asset_event(self, cs, event) -> None:
-        asset_data = event["asset"]
-
-        location = self.get_location(asset_data["location"])
+    def _add_asset(self, data) -> None:
         asset_model, _ = AssetModel.objects.get_or_create(
-            name=asset_data["asset_type"],
+            name=data["asset_type"],
             manufacturer=self._default_manufacturer,
         )
 
         asset = Asset.objects.create(
             asset_model=asset_model,
-            state="K",
-            location=location,
-            extra_data=asset_data["data"],
+            state="L",
+            location=None,
+            extra_data=data["data"],
         )
 
         try:
-            AssetCode.objects.get_or_create(asset=asset, code=asset_data["asset_code"], code_type="A")
+            AssetCode.objects.get_or_create(asset=asset, code=data["asset_code"], code_type="A")
         except IntegrityError:
             print("WARNING: You have run the import multiple times!")
-
-        AssetEvent.objects.create(
-            changeset=cs,
-            event_type="A",
-            asset=asset,
-            data=event,
-        )

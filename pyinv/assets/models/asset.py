@@ -74,18 +74,3 @@ class Asset(models.Model):
     def get_by_code(cls, code: str) -> Optional['Asset']:
         """Get an asset by its asset code."""
         return cls.objects.filter(assetcode__code=code).first()
-
-    def mark_disposed(self) -> None:
-        """Mark the asset as disposed."""
-        self.state = "D"
-        self.location = None
-        self.save()
-
-        try:
-            ll = self.linked_location
-            if ll.contents.count() > 0 or ll.children_set.count() > 0:
-                raise RuntimeError("Asset to dispose has contents.")
-            else:
-                ll.delete()
-        except Asset.linked_location.RelatedObjectDoesNotExist:
-            pass
