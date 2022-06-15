@@ -105,6 +105,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third Party
+    'django_filters',
     'rest_framework',
     'treebeard',
 
@@ -195,6 +196,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 DAMM32_ASSET_CODE_DEFAULT_PREFIX = getattr(configuration, 'DAMM32_ASSET_CODE_DEFAULT_PREFIX', 'INV')
