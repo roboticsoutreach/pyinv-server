@@ -1,9 +1,10 @@
 import json
 from pathlib import Path
 
-from assets.models import Asset, AssetCode, AssetModel, Manufacturer, Node
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError
+
+from assets.models import Asset, AssetCode, AssetModel, Manufacturer, Node
 
 
 class Command(BaseCommand):

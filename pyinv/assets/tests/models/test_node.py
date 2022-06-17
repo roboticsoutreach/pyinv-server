@@ -1,6 +1,7 @@
-from assets.models import Asset, AssetModel, Manufacturer, Node
 from django.db import IntegrityError
 from django.test import TestCase
+
+from assets.models import Asset, AssetModel, Manufacturer, Node
 
 
 class TestNode(TestCase):

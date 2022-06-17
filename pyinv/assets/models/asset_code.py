@@ -1,8 +1,9 @@
 import uuid
 
-from assets.asset_codes import ASSET_CODE_TYPE_CHOICES, AssetCodeType
 from django.core.exceptions import ValidationError
 from django.db import models
+
+from assets.asset_codes import ASSET_CODE_TYPE_CHOICES, AssetCodeType
 
 
 class AssetCode(models.Model):

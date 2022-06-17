@@ -1,5 +1,6 @@
-from assets.models import Manufacturer
 from django.test import TestCase
+
+from assets.models import Manufacturer
 
 
 class TestManufacturerModel(TestCase):

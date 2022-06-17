@@ -1,6 +1,7 @@
-from assets.asset_codes import Damm32AssetCodeStrategy
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+
+from assets.asset_codes import Damm32AssetCodeStrategy
 
 
 class TestDamm32AssetCode(TestCase):

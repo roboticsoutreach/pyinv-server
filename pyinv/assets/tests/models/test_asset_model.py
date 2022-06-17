@@ -1,6 +1,7 @@
-from assets.models import AssetModel, Manufacturer
 from django.db.models.deletion import ProtectedError
 from django.test import TestCase
+
+from assets.models import AssetModel, Manufacturer
 
 
 class TestAssetModel(TestCase):

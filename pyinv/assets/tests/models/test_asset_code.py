@@ -1,7 +1,8 @@
-from assets.models import Asset, AssetCode, AssetModel, Manufacturer
 from django.db import IntegrityError
 from django.forms import ValidationError
 from django.test import TestCase
+
+from assets.models import Asset, AssetCode, AssetModel, Manufacturer
 
 
 class TestAssetCodeModel(TestCase):

@@ -1,5 +1,6 @@
 """Asset Tree Node."""
 
+from typing import Optional
 from uuid import uuid4
 
 from django.core.exceptions import ValidationError
@@ -48,6 +49,10 @@ class Node(MP_Node):
                 name='node_type_force_name_if_asset',
             )
         ]
+
+    @property
+    def parent(self) -> Optional['Node']:
+        return self.get_parent()
 
     @property
     def display_name(self) -> str:

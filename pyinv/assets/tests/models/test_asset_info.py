@@ -1,5 +1,6 @@
-from assets.models import Asset, AssetCode, AssetModel, Manufacturer, Node
 from django.test import TestCase
+
+from assets.models import Asset, AssetCode, AssetModel, Manufacturer, Node
 
 
 class TestAsset(TestCase):
