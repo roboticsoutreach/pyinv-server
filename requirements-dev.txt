@@ -10,23 +10,37 @@ asgiref==3.5.1
     #   django
 attrs==21.4.0
     # via flake8-bugbear
+cffi==1.15.0
+    # via
+    #   -r requirements.txt
+    #   cryptography
 coverage[toml]==6.3.3
     # via -r requirements-dev.in
+cryptography==37.0.2
+    # via -r requirements.txt
 damm32==1.2.1
     # via -r requirements.txt
 django==3.2.13
     # via
     #   -r requirements.txt
+    #   django-cors-headers
     #   django-filter
     #   django-treebeard
     #   djangorestframework
+    #   djangorestframework-simplejwt
 django-autoslug==1.9.8
+    # via -r requirements.txt
+django-cors-headers==3.13.0
     # via -r requirements.txt
 django-filter==21.1
     # via -r requirements.txt
 django-treebeard==4.5.1
     # via -r requirements.txt
 djangorestframework==3.13.1
+    # via
+    #   -r requirements.txt
+    #   djangorestframework-simplejwt
+djangorestframework-simplejwt==5.2.0
     # via -r requirements.txt
 flake8==4.0.1
     # via
@@ -62,8 +76,16 @@ pycodestyle==2.8.0
     #   flake8
     #   flake8-debugger
     #   flake8-todo
+pycparser==2.21
+    # via
+    #   -r requirements.txt
+    #   cffi
 pyflakes==2.4.0
     # via flake8
+pyjwt==2.4.0
+    # via
+    #   -r requirements.txt
+    #   djangorestframework-simplejwt
 pytz==2022.1
     # via
     #   -r requirements.txt

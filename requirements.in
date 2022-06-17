@@ -1,6 +1,12 @@
 django>3.2,<3.3  # LTS
 django-autoslug
 django-filter
+django-cors-headers
 djangorestframework
+
+djangorestframework-simplejwt
+cryptography
+
+
 django-treebeard
 damm32
