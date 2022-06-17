@@ -3,10 +3,11 @@ django-autoslug
 django-filter
 django-cors-headers
 djangorestframework
+django-treebeard
+damm32
 
 djangorestframework-simplejwt
 cryptography
 
+django-rest-registration
 
-django-treebeard
-damm32

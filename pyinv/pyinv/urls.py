@@ -23,10 +23,16 @@ from rest_framework_simplejwt.views import (
 
 from assets.admin import admin_site
 
+api_urlpatterns = [
+    path('', include('assets.urls')),
+    path('auth/token/', TokenObtainPairView.as_view(), name='auth_token_obtain_pair'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='auth_token_refresh'),
+    path('auth/token/verify/', TokenVerifyView.as_view(), name='auth_token_verify'),
+    path('accounts/', include('rest_registration.api.urls')),
+]
+
+
 urlpatterns = [
-    path('api/v1/', include('assets.urls')),
-    path('api/v1/auth/token/', TokenObtainPairView.as_view(), name='auth_token_obtain_pair'),
-    path('api/v1/auth/token/refresh/', TokenRefreshView.as_view(), name='auth_token_refresh'),
-    path('api/v1/auth/token/verify/', TokenVerifyView.as_view(), name='auth_token_verify'),
+    path('api/v1/', include(api_urlpatterns)),
     path('admin/', admin_site.urls),
 ]

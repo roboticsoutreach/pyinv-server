@@ -17,6 +17,7 @@ django==3.2.13
     #   -r requirements.in
     #   django-cors-headers
     #   django-filter
+    #   django-rest-registration
     #   django-treebeard
     #   djangorestframework
     #   djangorestframework-simplejwt
@@ -26,11 +27,14 @@ django-cors-headers==3.13.0
     # via -r requirements.in
 django-filter==21.1
     # via -r requirements.in
+django-rest-registration==0.7.2
+    # via -r requirements.in
 django-treebeard==4.5.1
     # via -r requirements.in
 djangorestframework==3.13.1
     # via
     #   -r requirements.in
+    #   django-rest-registration
     #   djangorestframework-simplejwt
 djangorestframework-simplejwt==5.2.0
     # via -r requirements.in

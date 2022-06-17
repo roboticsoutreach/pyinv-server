@@ -108,6 +108,7 @@ INSTALLED_APPS = [
     "corsheaders",
     'django_filters',
     'rest_framework',
+    'rest_registration',
     'treebeard',
 
     # First Party
@@ -204,6 +205,34 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+}
+
+REGISTRATION_ENABLED = getattr(configuration, 'REGISTRATION_ENABLED', False)
+
+# REST Registration
+REST_REGISTRATION = {
+    'REGISTER_FLOW_ENABLED': REGISTRATION_ENABLED,
+    'REGISTER_VERIFICATION_ENABLED': REGISTRATION_ENABLED,
+    'REGISTER_VERIFICATION_URL': getattr(configuration, 'REGISTER_VERIFICATION_URL', None),
+
+    'REGISTER_EMAIL_VERIFICATION_ENABLED': REGISTRATION_ENABLED,
+    'REGISTER_EMAIL_VERIFICATION_URL': getattr(configuration, 'REGISTER_EMAIL_VERIFICATION_URL', None),
+
+    'RESET_PASSWORD_VERIFICATION_ENABLED': getattr(configuration, 'RESET_PASSWORD_ENABLED', False),
+    'RESET_PASSWORD_VERIFICATION_URL': getattr(configuration, 'RESET_PASSWORD_VERIFICATION_URL', None),
+
+    'VERIFICATION_FROM_EMAIL': getattr(configuration, 'VERIFICATION_FROM_EMAIL', SERVER_EMAIL),
+
+    'USER_HIDDEN_FIELDS': (
+        'id',
+        'last_login',
+        'is_active',
+        'is_staff',
+        'is_superuser',
+        'user_permissions',
+        'groups',
+        'date_joined',
+    ),
 }
 
 DAMM32_ASSET_CODE_DEFAULT_PREFIX = getattr(configuration, 'DAMM32_ASSET_CODE_DEFAULT_PREFIX', 'INV')
