@@ -32,7 +32,7 @@ class Asset(models.Model):
     @property
     def display_name(self) -> str:
         try:
-            return self.node.name or str(self.asset_model)
+            return self.node.name or str(f"{self.asset_model} ({self.first_asset_code})")
         except Asset.node.RelatedObjectDoesNotExist:
             return str(self.asset_model)
 
