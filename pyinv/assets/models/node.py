@@ -55,6 +55,10 @@ class Node(MP_Node):
         return self.get_parent()
 
     @property
+    def ancestors(self):
+        return self.get_ancestors().all()
+
+    @property
     def display_name(self) -> str:
         if self.node_type == NodeType.ASSET:
             return self.asset.display_name

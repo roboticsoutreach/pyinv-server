@@ -21,6 +21,7 @@ class AssetSerializer(serializers.ModelSerializer):
             'node',
             'asset_model',
             'asset_codes',
+            'first_asset_code',
             'state',
             'created_at',
             'updated_at',
@@ -48,14 +49,26 @@ class ManufacturerSerializer(serializers.ModelSerializer):
         fields = ('name', 'slug', 'created_at', 'updated_at', 'asset_models')
 
 
+class NodeLinkSerializer(serializers.ModelSerializer):
+    """Serializer with enough information to link to a node."""
+
+    id = serializers.UUIDField(read_only=True)  # noqa: A003
+    node_type = serializers.ChoiceField(choices=NodeType.choices)
+    display_name = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Node
+        fields = ('id', 'node_type', 'display_name')
+
 class NodeSerializer(serializers.ModelSerializer):
     """Serializer for nodes."""
 
     id = serializers.UUIDField(read_only=True)  # noqa: A003
     name = serializers.CharField()
     node_type = serializers.ChoiceField(choices=NodeType.choices)
-    asset = serializers.PrimaryKeyRelatedField(read_only=True)
+    asset = AssetSerializer()
     display_name = serializers.CharField(read_only=True)
+    ancestors = serializers.ListField(child=NodeLinkSerializer(), read_only=True)
 
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
     numchild = serializers.IntegerField(read_only=True)
@@ -64,5 +77,5 @@ class NodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Node
         fields = (
-            'id', 'name', 'node_type', 'asset', 'display_name', 'parent', 'numchild', 'depth',
+            'id', 'name', 'node_type', 'asset', 'display_name', 'parent', 'numchild', 'depth', 'ancestors',
         )
