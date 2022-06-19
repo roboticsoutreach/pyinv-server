@@ -39,7 +39,7 @@ class ManufacturerLinkSerializer(serializers.ModelSerializer):
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     """Serializer for Manufacturer."""
-    slug =serializers.CharField(allow_null=True, required=False)
+    slug = serializers.CharField(allow_null=True, required=False)
     asset_models = serializers.SlugRelatedField(source="assetmodel_set", slug_field="slug", read_only=True, many=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
@@ -51,6 +51,7 @@ class ManufacturerSerializer(serializers.ModelSerializer):
 
 class AssetModelSerializer(serializers.ModelSerializer):
     """Serializer for AssetModel objects."""
+    slug = serializers.CharField(allow_null=True, required=False)
     manufacturer = ManufacturerLinkSerializer(read_only=True)
     asset_count = serializers.IntegerField(read_only=True, source="asset_set.count")
 

@@ -1,13 +1,14 @@
-from django.db.models import Count
+from django.db.models import Count, ProtectedError
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets
 
 from assets.filtersets import AssetModelFilterSet
 from assets.models import AssetModel
 from assets.serializers import AssetModelSerializer
+from pyinv.api_exceptions import UnableToDelete
 
 
-class AssetModelViewSet(viewsets.ReadOnlyModelViewSet):
+class AssetModelViewSet(viewsets.ModelViewSet):
     """Fetch information about asset models."""
 
     # Annotate with count so that we can order by it.
@@ -23,3 +24,9 @@ class AssetModelViewSet(viewsets.ReadOnlyModelViewSet):
         'manufacturer__name',
         'manufacturer__slug',
     ]
+
+    def perform_destroy(self, instance):
+        try:
+            return super(AssetModelViewSet, self).perform_destroy(instance)
+        except ProtectedError:
+            raise UnableToDelete()

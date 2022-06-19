@@ -5,6 +5,7 @@ from assets.models import Manufacturer
 from assets.serializers import ManufacturerSerializer
 from pyinv.api_exceptions import UnableToDelete
 
+
 class ManufacturerViewSet(viewsets.ModelViewSet):
     """Fetch information about manufacturers."""
 
