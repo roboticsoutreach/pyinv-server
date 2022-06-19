@@ -51,10 +51,19 @@ class ManufacturerSerializer(serializers.ModelSerializer):
 class AssetModelSerializer(serializers.ModelSerializer):
     """Serializer for AssetModel objects."""
     manufacturer = ManufacturerLinkSerializer(read_only=True)
+    asset_count = serializers.IntegerField(read_only=True, source="asset_set.count")
 
     class Meta:
         model = AssetModel
-        fields = ('name', 'slug', 'manufacturer', 'is_container', 'created_at', 'updated_at', )
+        fields = (
+            'name',
+            'slug',
+            'manufacturer',
+            'is_container',
+            'asset_count',
+            'created_at',
+            'updated_at',
+        )
 
 
 class NodeLinkSerializer(serializers.ModelSerializer):
