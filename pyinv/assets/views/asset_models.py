@@ -10,6 +10,7 @@ class AssetModelViewSet(viewsets.ReadOnlyModelViewSet):
     """Fetch information about asset models."""
 
     queryset = AssetModel.objects.all()
+    lookup_field = "slug"
     serializer_class = AssetModelSerializer
     filterset_class = AssetModelFilterSet
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
