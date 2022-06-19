@@ -13,7 +13,7 @@ class AssetModelViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = AssetModelSerializer
     filterset_class = AssetModelFilterSet
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    ordering_fields = ['created_at', 'updated_at']
+    ordering_fields = ['name', 'created_at', 'updated_at']
     search_fields = [
         'name',
         'slug'

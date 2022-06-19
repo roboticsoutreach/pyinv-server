@@ -59,6 +59,10 @@ class Node(MP_Node):
         return self.get_ancestors().all()
 
     @property
+    def is_container(self) -> bool:
+        return self.node_type == NodeType.LOCATION or self.asset.asset_model.is_container
+
+    @property
     def display_name(self) -> str:
         if self.node_type == NodeType.ASSET:
             return self.asset.display_name

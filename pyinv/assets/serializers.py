@@ -29,13 +29,12 @@ class AssetSerializer(serializers.ModelSerializer):
         )
 
 
-class AssetModelSerializer(serializers.ModelSerializer):
-    """Serializer for AssetModel objects."""
-    manufacturer = serializers.SlugRelatedField(slug_field="slug", read_only=True)
+class ManufacturerLinkSerializer(serializers.ModelSerializer):
+    """Serializer with enough information to link to a manufacturer."""
 
     class Meta:
-        model = AssetModel
-        fields = ('name', 'slug', 'manufacturer', 'is_container', 'created_at', 'updated_at', )
+        model = Manufacturer
+        fields = ('name', 'slug')
 
 
 class ManufacturerSerializer(serializers.ModelSerializer):
@@ -49,16 +48,27 @@ class ManufacturerSerializer(serializers.ModelSerializer):
         fields = ('name', 'slug', 'created_at', 'updated_at', 'asset_models')
 
 
+class AssetModelSerializer(serializers.ModelSerializer):
+    """Serializer for AssetModel objects."""
+    manufacturer = ManufacturerLinkSerializer(read_only=True)
+
+    class Meta:
+        model = AssetModel
+        fields = ('name', 'slug', 'manufacturer', 'is_container', 'created_at', 'updated_at', )
+
+
 class NodeLinkSerializer(serializers.ModelSerializer):
     """Serializer with enough information to link to a node."""
 
     id = serializers.UUIDField(read_only=True)  # noqa: A003
     node_type = serializers.ChoiceField(choices=NodeType.choices)
+    is_container = serializers.BooleanField(read_only=True)
     display_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Node
-        fields = ('id', 'node_type', 'display_name')
+        fields = ('id', 'node_type', 'display_name', 'is_container')
+
 
 class NodeSerializer(serializers.ModelSerializer):
     """Serializer for nodes."""
@@ -69,6 +79,7 @@ class NodeSerializer(serializers.ModelSerializer):
     asset = AssetSerializer()
     display_name = serializers.CharField(read_only=True)
     ancestors = serializers.ListField(child=NodeLinkSerializer(), read_only=True)
+    is_container = serializers.BooleanField(read_only=True)
 
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
     numchild = serializers.IntegerField(read_only=True)
@@ -77,5 +88,14 @@ class NodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Node
         fields = (
-            'id', 'name', 'node_type', 'asset', 'display_name', 'parent', 'numchild', 'depth', 'ancestors',
+            'id',
+            'name',
+            'node_type',
+            'asset',
+            'display_name',
+            'parent',
+            'numchild',
+            'depth',
+            'ancestors',
+            'is_container',
         )
