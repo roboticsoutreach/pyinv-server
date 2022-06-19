@@ -48,7 +48,7 @@ class TestAsset(TestCase):
         asset = Asset.objects.create(asset_model=self.asset_model)
         node = Node.add_root(node_type="A", asset=asset)
         self.assertEqual(asset.node, node)
-        self.assertEqual(asset.display_name, "foo bar")
+        self.assertEqual(asset.display_name, f"foo bar ({asset.first_asset_code})")
 
     def test_asset_display_name_named_node(self) -> None:
         """Test the display name with a named node."""
