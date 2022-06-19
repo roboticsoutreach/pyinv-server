@@ -40,13 +40,13 @@ class ManufacturerLinkSerializer(serializers.ModelSerializer):
 class ManufacturerSerializer(serializers.ModelSerializer):
     """Serializer for Manufacturer."""
     slug = serializers.CharField(allow_null=True, required=False)
-    asset_models = serializers.SlugRelatedField(source="assetmodel_set", slug_field="slug", read_only=True, many=True)
+    # asset_models = serializers.SlugRelatedField(source="assetmodel_set", slug_field="slug", read_only=True, many=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Manufacturer
-        fields = ('name', 'slug', 'created_at', 'updated_at', 'asset_models')
+        fields = ('name', 'slug', 'created_at', 'updated_at')
 
 
 class AssetModelSerializer(serializers.ModelSerializer):
