@@ -3,12 +3,28 @@ from rest_framework import serializers
 from .models import Asset, AssetModel, Manufacturer, Node, NodeType
 
 
+class AssetModelLinkSerializer(serializers.ModelSerializer):
+    """Serializer with enough information to link to an asset model."""
+
+    class Meta:
+        model = AssetModel
+        fields = ('name', 'slug')
+
+
+class AssetNodeLinkSerializer(serializers.ModelSerializer):
+    """Serializer with enough information to link to a node."""
+
+    class Meta:
+        model = Node
+        fields = ('id', 'name', 'numchild')
+
+
 class AssetSerializer(serializers.ModelSerializer):
     """Serializer for Asset objects."""
 
     id = serializers.UUIDField(read_only=True)  # noqa: A003
-    node = serializers.PrimaryKeyRelatedField(read_only=True)
-    asset_model = serializers.SlugRelatedField(slug_field="slug", read_only=True)
+    node = AssetNodeLinkSerializer(read_only=True)
+    asset_model = AssetModelLinkSerializer(read_only=True)
     asset_codes = serializers.ListField(child=serializers.CharField())
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
@@ -53,7 +69,11 @@ class AssetModelSerializer(serializers.ModelSerializer):
     """Serializer for AssetModel objects."""
     slug = serializers.CharField(allow_null=True, required=False)
     manufacturer = ManufacturerLinkSerializer(read_only=True)
-    manufacturer_slug = serializers.SlugRelatedField(slug_field="slug", source="manufacturer", queryset=Manufacturer.objects.all())
+    manufacturer_slug = serializers.SlugRelatedField(
+        slug_field="slug",
+        source="manufacturer",
+        queryset=Manufacturer.objects.all()
+    )
     asset_count = serializers.IntegerField(read_only=True, source="asset_set.count")
 
     class Meta:

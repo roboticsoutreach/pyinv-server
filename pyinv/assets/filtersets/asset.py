@@ -1,7 +1,7 @@
 import django_filters
 from django.core.exceptions import ValidationError
 
-from assets.models import Asset, AssetModel
+from assets.models import Asset, AssetModel, AssetState
 
 
 class AssetFilterSet(django_filters.FilterSet):
@@ -19,6 +19,7 @@ class AssetFilterSet(django_filters.FilterSet):
         queryset=AssetModel.objects.all(),
         label="Asset Model",
     )
+    state = django_filters.MultipleChoiceFilter(choices=AssetState.choices, label="State")
     is_container = django_filters.BooleanFilter(field_name='asset_model__is_container', label="Is Container")
     created_at = django_filters.DateTimeFromToRangeFilter()
     updated_at = django_filters.DateTimeFromToRangeFilter()

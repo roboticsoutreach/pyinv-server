@@ -52,7 +52,7 @@ class Command(BaseCommand):
                 print("Exit!")
                 break
 
-            print(i)
+            print(f"Placing assets iteratively: pass {i}")
 
             for obj in data.values():
                 if obj["type"] == "asset":
@@ -65,6 +65,9 @@ class Command(BaseCommand):
                         if parent is not None:
                             try:
                                 assert parent.node
+                                if parent.node.node_type == "A":
+                                    parent.node.asset.asset_model.is_container = True
+                                    parent.node.asset.asset_model.save()
                                 parent.node.add_child(node_type="A", asset=asset)
                                 parent.node.refresh_from_db()
                             except Asset.node.RelatedObjectDoesNotExist:
@@ -76,6 +79,9 @@ class Command(BaseCommand):
                         parent.add_child(node_type="A", asset=asset)
                         parent.refresh_from_db()
 
+        Node.objects.get(name="unknown-location").mark_lost(recursive=True)
+        Node.objects.get(name="disposed-of").mark_disposed(recursive=True)
+
     def _add_asset(self, data) -> None:
         asset_model, _ = AssetModel.objects.get_or_create(
             name=data["asset_type"],
@@ -84,7 +90,7 @@ class Command(BaseCommand):
 
         asset = Asset.objects.create(
             asset_model=asset_model,
-            state="L",
+            state="K",
             extra_data=data["data"],
         )
 
