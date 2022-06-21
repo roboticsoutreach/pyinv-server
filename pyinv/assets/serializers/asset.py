@@ -1,33 +1,15 @@
 from rest_framework import serializers
 
-from assets.models import Asset, Node
+from assets.models import Asset
 
 from .asset_model import AssetModelLinkSerializer
-
-
-class AssetNodeParentLinkSerializer(serializers.ModelSerializer):
-    """Serializer with enough information to link to a node's parent."""
-
-    class Meta:
-        model = Node
-        fields = ('id', 'display_name')
-
-
-class AssetNodeLinkSerializer(serializers.ModelSerializer):
-    """Serializer with enough information to link to a node."""
-
-    parent = AssetNodeParentLinkSerializer(read_only=True)
-
-    class Meta:
-        model = Node
-        fields = ('id', 'display_name', 'numchild', 'parent')
+from .node_link import NodeLinkWithParentSerializer
 
 
 class AssetSerializer(serializers.ModelSerializer):
     """Serializer for Asset objects."""
 
     id = serializers.UUIDField(read_only=True)  # noqa: A003
-    node = AssetNodeLinkSerializer(read_only=True)
     asset_model = AssetModelLinkSerializer(read_only=True)
     asset_codes = serializers.ListField(child=serializers.CharField())
     created_at = serializers.DateTimeField(read_only=True)
@@ -38,7 +20,6 @@ class AssetSerializer(serializers.ModelSerializer):
         model = Asset
         fields = (
             'id',
-            'node',
             'asset_model',
             'asset_codes',
             'first_asset_code',
@@ -46,4 +27,16 @@ class AssetSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
             'extra_data',
+        )
+
+
+class AssetWithNodeSerializer(AssetSerializer):
+    """Serializer for Asset objects."""
+
+    node = NodeLinkWithParentSerializer(read_only=True)
+
+    class Meta:
+        model = Asset
+        fields = AssetSerializer.Meta.fields + (
+            'node',
         )

@@ -3,14 +3,14 @@ from rest_framework import filters, viewsets
 
 from assets.filtersets import AssetFilterSet
 from assets.models import Asset
-from assets.serializers import AssetSerializer
+from assets.serializers import AssetWithNodeSerializer
 
 
 class AssetViewSet(viewsets.ReadOnlyModelViewSet):
     """Fetch information about assets."""
 
     queryset = Asset.objects.all()
-    serializer_class = AssetSerializer
+    serializer_class = AssetWithNodeSerializer
     filterset_class = AssetFilterSet
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['created_at', 'updated_at']

@@ -1,14 +1,12 @@
-from .asset import (
-    AssetNodeLinkSerializer,
-    AssetNodeParentLinkSerializer,
-    AssetSerializer,
-)
+from .asset import AssetSerializer, AssetWithNodeSerializer
 from .asset_model import AssetModelLinkSerializer, AssetModelSerializer
 from .manufacturer import ManufacturerLinkSerializer, ManufacturerSerializer
-from .node import NodeLinkSerializer, NodeSerializer
+from .node import NodeSerializer
+from .node_link import NodeLinkSerializer, NodeLinkWithParentSerializer
 
 __all__ = [
     "AssetSerializer",
+    "AssetWithNodeSerializer",
     "AssetModelLinkSerializer",
     "AssetModelSerializer",
     "ManufacturerLinkSerializer",
@@ -16,5 +14,6 @@ __all__ = [
     "AssetNodeLinkSerializer",
     "AssetNodeParentLinkSerializer",
     "NodeLinkSerializer",
+    "NodeLinkWithParentSerializer",
     "NodeSerializer",
 ]
