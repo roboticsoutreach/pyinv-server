@@ -11,12 +11,22 @@ class AssetModelLinkSerializer(serializers.ModelSerializer):
         fields = ('name', 'slug')
 
 
-class AssetNodeLinkSerializer(serializers.ModelSerializer):
-    """Serializer with enough information to link to a node."""
+class AssetNodeParentLinkSerializer(serializers.ModelSerializer):
+    """Serializer with enough information to link to a node's parent."""
 
     class Meta:
         model = Node
-        fields = ('id', 'name', 'numchild')
+        fields = ('id', 'display_name')
+
+
+class AssetNodeLinkSerializer(serializers.ModelSerializer):
+    """Serializer with enough information to link to a node."""
+
+    parent = AssetNodeParentLinkSerializer(read_only=True)
+
+    class Meta:
+        model = Node
+        fields = ('id', 'display_name', 'numchild', 'parent')
 
 
 class AssetSerializer(serializers.ModelSerializer):
