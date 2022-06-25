@@ -20,7 +20,7 @@ class AssetModelViewSet(viewsets.ModelViewSet):
     ordering_fields = ['name', 'asset_count', 'created_at', 'updated_at']
     search_fields = [
         'name',
-        'slug'
+        'slug',
         'manufacturer__name',
         'manufacturer__slug',
     ]
