@@ -20,6 +20,7 @@ class AssetSerializer(serializers.ModelSerializer):
         model = Asset
         fields = (
             'id',
+            'display_name',
             'asset_model',
             'asset_codes',
             'first_asset_code',
