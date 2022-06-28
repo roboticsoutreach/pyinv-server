@@ -8,7 +8,7 @@ class NodeLinkSerializer(serializers.ModelSerializer):
 
     id = serializers.UUIDField(read_only=True)  # noqa: A003
     display_name = serializers.CharField(read_only=True)
-    node_type = serializers.ChoiceField(choices=NodeType.choices)
+    node_type = serializers.ChoiceField(choices=NodeType.choices, read_only=True)
     is_container = serializers.BooleanField(read_only=True)
     numchild = serializers.IntegerField(read_only=True)
 

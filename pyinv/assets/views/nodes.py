@@ -1,5 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, viewsets
+from rest_framework import filters, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -8,7 +8,7 @@ from assets.models import Node
 from assets.serializers import NodeSerializer
 
 
-class NodeViewSet(viewsets.ReadOnlyModelViewSet):
+class NodeViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
     """Fetch information about nodes."""
 
     queryset = Node.objects.all()
@@ -16,6 +16,14 @@ class NodeViewSet(viewsets.ReadOnlyModelViewSet):
     filterset_class = NodeFilterSet
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['name', 'created_at', 'updated_at', 'numchild', 'depth']
+    search_fields = [
+        'name',
+        'asset__asset_model__name',
+        'asset__asset_model__slug',
+        'asset__asset_model__manufacturer__name',
+        'asset__asset_model__manufacturer__slug',
+        'asset__assetcode__code',
+    ]
 
     @action(detail=True)
     def ancestors(self, request, pk=0):
