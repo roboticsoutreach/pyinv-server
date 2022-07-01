@@ -8,21 +8,10 @@ from django.db import models
 from .asset_model import AssetModel
 
 
-class AssetState(models.TextChoices):
-    KNOWN = 'K', 'Known'  # A known asset that we currently own.
-    LOST = 'L', 'Lost'  # A known asset that we currently own.
-    DISPOSED = 'D', 'Disposed'  # An asset that has been disposed of.
-
-
 class Asset(models.Model):
     """Asset."""
 
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)  # noqa: A003
-    state = models.CharField(
-        max_length=1,
-        choices=AssetState.choices,
-        default=AssetState.KNOWN,
-    )
     asset_model = models.ForeignKey(AssetModel, on_delete=models.PROTECT)
 
     created_at = models.DateTimeField(auto_now_add=True)

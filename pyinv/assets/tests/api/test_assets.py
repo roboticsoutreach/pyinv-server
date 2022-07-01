@@ -43,7 +43,6 @@ class TestAssetAPI(TestCase):
 
         asset = data['results'][0]
         self.assertEqual(asset['id'], str(self.asset.id))
-        self.assertEqual(asset['state'], 'K')
         self.assertEqual(asset['asset_model']['slug'], self.model.slug)
         self.assertIsNone(asset['node'])
         self.assertEqual(asset['extra_data'], {})
@@ -60,7 +59,6 @@ class TestAssetAPI(TestCase):
 
         asset = response.json()
         self.assertEqual(asset['id'], str(self.asset.id))
-        self.assertEqual(asset['state'], 'K')
         self.assertEqual(asset['asset_model']['slug'], self.model.slug)
         self.assertIsNone(asset['node'])
         self.assertEqual(asset['extra_data'], {})

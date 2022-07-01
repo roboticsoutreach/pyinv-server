@@ -1,4 +1,4 @@
-from .asset import Asset, AssetState
+from .asset import Asset
 from .asset_code import AssetCode
 from .asset_model import AssetModel
 from .manufacturer import Manufacturer
@@ -8,7 +8,6 @@ __all__ = [
     "AssetCode",
     "Asset",
     "AssetModel",
-    "AssetState",
     "Manufacturer",
     "Node",
     "NodeType",
