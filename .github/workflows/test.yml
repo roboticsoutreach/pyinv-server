@@ -31,10 +31,10 @@ jobs:
         run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Use the dev configuration
         run: cp pyinv/pyinv/configuration.dev.py pyinv/pyinv/configuration.py
+      - name: Static type checking
+        run: make type
       - name: Lint
         run: make lint
-      # - name: Static type checking
-      #   run: make type
       - name: Unit tests
         run: make test
       - name: Django Static Checks

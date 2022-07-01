@@ -1,8 +1,11 @@
 import platform
 from pathlib import Path
 
+import django_stubs_ext
 from django.core.exceptions import ImproperlyConfigured
 from pkg_resources import parse_version
+
+django_stubs_ext.monkeypatch()
 
 #
 # Environment setup

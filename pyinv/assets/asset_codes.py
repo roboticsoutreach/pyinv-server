@@ -116,7 +116,7 @@ class AssetCodeType(str, Enum):
         return self.strategy_mapping()[self]
 
 
-ASSET_CODE_TYPE_CHOICES: List[Tuple[str, AssetCodeType]] = [
+ASSET_CODE_TYPE_CHOICES: List[Tuple[str, str]] = [
     (key.value, code_type.name)
     for key, code_type in AssetCodeType.strategy_mapping().items()
 ]

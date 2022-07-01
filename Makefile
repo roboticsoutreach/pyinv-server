@@ -24,7 +24,7 @@ docs-serve:
 	$(CMD) sphinx-autobuild --port 8001 $(SPHINX_ARGS)
 
 type: 
-	$(CMD) mypy $(PYMODULE) $(TESTS) 
+	cd pyinv && mypy $(PYMODULE) $(TESTS) 
 
 test: | $(PYMODULE)
 	$(CMD) coverage run --source="$(PYMODULE)" $(PYMODULE)/manage.py test -v 2 $(APPS) $(PYMODULE)
