@@ -24,7 +24,6 @@ class AssetSerializer(serializers.ModelSerializer):
             'asset_model',
             'asset_codes',
             'first_asset_code',
-            'state',
             'created_at',
             'updated_at',
             'extra_data',

@@ -14,8 +14,8 @@ class AssetCodeAdmin(admin.ModelAdmin):
 
 
 class AssetAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "asset_model", "state", "node"]
-    list_filter = ["asset_model", "state"]
+    list_display = ["__str__", "asset_model", "node"]
+    list_filter = ["asset_model"]
 
 
 class AssetModelAdmin(admin.ModelAdmin):

@@ -79,8 +79,8 @@ class Command(BaseCommand):
                         parent.add_child(node_type="A", asset=asset)
                         parent.refresh_from_db()
 
-        Node.objects.get(name="unknown-location").mark_lost(recursive=True)
-        Node.objects.get(name="disposed-of").mark_disposed(recursive=True)
+        Node.objects.get(name="unknown-location").mark_out_of_tree(recursive=True)
+        Node.objects.get(name="disposed-of").mark_out_of_tree(recursive=True)
 
     def _add_asset(self, data) -> None:
         asset_model, _ = AssetModel.objects.get_or_create(
@@ -90,7 +90,6 @@ class Command(BaseCommand):
 
         asset = Asset.objects.create(
             asset_model=asset_model,
-            state="K",
             extra_data=data["data"],
         )
 

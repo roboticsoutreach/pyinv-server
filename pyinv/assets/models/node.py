@@ -7,8 +7,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from treebeard.mp_tree import MP_Node
 
-from assets.models import AssetState
-
 
 class NodeType(models.TextChoices):
     """The type of node."""
@@ -74,26 +72,9 @@ class Node(MP_Node):
     def __str__(self):
         return self.display_name
 
-    def _mark_out_of_tree(self, state: AssetState, recursive: bool) -> None:
+    def mark_out_of_tree(self, recursive: bool) -> None:
         """Mark the node and all of its descendants as out of tree."""
         if not recursive and self.get_descendants().count() > 0:
             raise ValueError('Cannot mark a non-empty node as lost.')
 
-        if self.node_type == NodeType.ASSET:
-            self.asset.state = state
-            self.asset.save()
-
-        if recursive:
-            for node in self.get_descendants().filter(node_type="A"):
-                node.asset.state = state
-                node.asset.save()
-
         self.delete()
-
-    def mark_lost(self, *, recursive: bool = False) -> None:
-        """Mark the node and all of its descendants as lost."""
-        self._mark_out_of_tree(AssetState.LOST, recursive)
-
-    def mark_disposed(self, *, recursive: bool = False) -> None:
-        """Mark the node and all of its descendants as disposed."""
-        self._mark_out_of_tree(AssetState.DISPOSED, recursive)

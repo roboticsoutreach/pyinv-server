@@ -19,7 +19,6 @@ class TestAsset(TestCase):
 
         # Check defaults
         self.assertIsNotNone(asset.id)
-        self.assertEqual(asset.state, "K")
         self.assertEqual(asset.extra_data, {})
 
     def test_asset_first_asset_code(self) -> None:
