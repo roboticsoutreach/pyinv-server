@@ -17,7 +17,7 @@ class AssetCode(models.Model):
     def __str__(self) -> str:
         return self.code
 
-    def clean(self):
+    def clean(self) -> None:
         try:
             code_type = AssetCodeType(self.code_type).get_strategy()
             code_type.validate(self.code)

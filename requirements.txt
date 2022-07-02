@@ -18,6 +18,7 @@ django==3.2.13
     #   django-cors-headers
     #   django-filter
     #   django-rest-registration
+    #   django-stubs-ext
     #   django-treebeard
     #   djangorestframework
     #   djangorestframework-simplejwt
@@ -28,6 +29,8 @@ django-cors-headers==3.13.0
 django-filter==21.1
     # via -r requirements.in
 django-rest-registration==0.7.2
+    # via -r requirements.in
+django-stubs-ext==0.5.0
     # via -r requirements.in
 django-treebeard==4.5.1
     # via -r requirements.in
@@ -48,3 +51,5 @@ pytz==2022.1
     #   djangorestframework
 sqlparse==0.4.2
     # via django
+typing-extensions==4.3.0
+    # via django-stubs-ext

@@ -1,3 +1,5 @@
+from typing import Dict, List, Tuple, Union
+
 #########################
 #                       #
 #   Required settings   #
@@ -8,7 +10,8 @@
 # access to the server via any other hostnames. The first FQDN in the list will be treated as the preferred name.
 #
 # Example: ALLOWED_HOSTS = ['pyinv.example.com', 'pyinv.internal.local']
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS: List[str] = []
 
 # Database configuration. See the Django documentation for a complete list of available parameters:
 #   https://docs.djangoproject.com/en/stable/ref/settings/#databases
@@ -37,7 +40,7 @@ SECRET_KEY = ''
 
 # Specify one or more name and email address tuples representing PyInv administrators. These people will be notified of
 # application errors (assuming correct email settings are provided).
-ADMINS = [
+ADMINS: List[Tuple[str, str]] = [
     # ('John Doe', 'jdoe@example.com'),
 ]
 
@@ -50,7 +53,7 @@ BASE_PATH = ''
 # on a production system.
 DEBUG = False
 
-EMAIL = {
+EMAIL: Dict[str, Union[str, int, bool]] = {
     # 'SERVER': '',
     # 'USERNAME': '',
     # 'PASSWORD': '',

@@ -1,5 +1,6 @@
 import django_filters
 from django.core.exceptions import ValidationError
+from django.db.models import QuerySet
 
 from assets.models import Asset, AssetModel
 
@@ -23,7 +24,7 @@ class AssetFilterSet(django_filters.FilterSet):
     created_at = django_filters.DateTimeFromToRangeFilter()
     updated_at = django_filters.DateTimeFromToRangeFilter()
 
-    def filter_asset_code(self, queryset, name, value):
+    def filter_asset_code(self, queryset: QuerySet[AssetModel], name: str, value: str) -> QuerySet[AssetModel]:
         qs = queryset.filter(assetcode__code=value)
         try:
             qs = qs | queryset.filter(id=value)

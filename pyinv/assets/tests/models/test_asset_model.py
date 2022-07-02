@@ -6,7 +6,7 @@ from assets.models import AssetModel, Manufacturer
 
 class TestAssetModel(TestCase):
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         self.manufacturer = Manufacturer.objects.create(name="BeeCorp")
         self.container = AssetModel.objects.create(

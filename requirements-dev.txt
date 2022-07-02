@@ -26,6 +26,8 @@ django==3.2.13
     #   django-cors-headers
     #   django-filter
     #   django-rest-registration
+    #   django-stubs
+    #   django-stubs-ext
     #   django-treebeard
     #   djangorestframework
     #   djangorestframework-simplejwt
@@ -37,6 +39,12 @@ django-filter==21.1
     # via -r requirements.txt
 django-rest-registration==0.7.2
     # via -r requirements.txt
+django-stubs[compatible-mypy]==1.12.0
+    # via -r requirements-dev.in
+django-stubs-ext==0.5.0
+    # via
+    #   -r requirements.txt
+    #   django-stubs
 django-treebeard==4.5.1
     # via -r requirements.txt
 djangorestframework==3.13.1
@@ -46,6 +54,8 @@ djangorestframework==3.13.1
     #   djangorestframework-simplejwt
 djangorestframework-simplejwt==5.2.0
     # via -r requirements.txt
+drf-typed==0.2.0
+    # via -r requirements-dev.in
 flake8==4.0.1
     # via
     #   -r requirements-dev.in
@@ -75,6 +85,12 @@ isort==5.10.1
     #   flake8-isort
 mccabe==0.6.1
     # via flake8
+mypy==0.961
+    # via
+    #   -r requirements-dev.in
+    #   django-stubs
+mypy-extensions==0.4.3
+    # via mypy
 pycodestyle==2.8.0
     # via
     #   flake8
@@ -102,4 +118,19 @@ sqlparse==0.4.2
 testfixtures==6.18.5
     # via flake8-isort
 tomli==2.0.1
-    # via coverage
+    # via
+    #   coverage
+    #   django-stubs
+    #   mypy
+types-pytz==2022.1.1
+    # via django-stubs
+types-pyyaml==6.0.9
+    # via django-stubs
+types-setuptools==57.4.18
+    # via -r requirements-dev.in
+typing-extensions==4.3.0
+    # via
+    #   -r requirements.txt
+    #   django-stubs
+    #   django-stubs-ext
+    #   mypy

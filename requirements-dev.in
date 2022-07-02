@@ -9,3 +9,8 @@ flake8-bugbear
 flake8-builtins
 isort
 coverage[toml]
+
+mypy
+drf-typed
+django-stubs[compatible-mypy]
+types-setuptools

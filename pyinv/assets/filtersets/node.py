@@ -2,6 +2,7 @@ from typing import Optional
 
 import django_filters
 from django.core.exceptions import ValidationError
+from django.db.models import QuerySet
 
 from assets.models import Node
 
@@ -12,7 +13,7 @@ class NodeFilterSet(django_filters.FilterSet):
     descendent_of = django_filters.CharFilter(label="Descendent of", method='filter_descendent_of')
     is_container = django_filters.BooleanFilter(method='filter_is_container', label="Is Container")
 
-    def filter_parent(self, queryset, name, value):
+    def filter_parent(self, queryset: QuerySet[Node], name: str, value: str) -> QuerySet[Node]:
         if value == "root":
             return queryset & Node.get_root_nodes()
         try:
@@ -21,7 +22,7 @@ class NodeFilterSet(django_filters.FilterSet):
         except (Node.DoesNotExist, ValidationError):
             return Node.objects.none()
 
-    def filter_descendent_of(self, queryset, name, value):
+    def filter_descendent_of(self, queryset: QuerySet[Node], name: str, value: str) -> QuerySet[Node]:
         if value == "root":
             return queryset  # All nodes are a child of the root
         try:
@@ -30,7 +31,7 @@ class NodeFilterSet(django_filters.FilterSet):
         except (Node.DoesNotExist, ValidationError):
             return Node.objects.none()
 
-    def filter_is_container(self, queryset, name, value: Optional[bool]):
+    def filter_is_container(self, queryset: QuerySet[Node], name: str, value: Optional[bool]) -> QuerySet[Node]:
         if value is None:
             return queryset
         elif value is True:

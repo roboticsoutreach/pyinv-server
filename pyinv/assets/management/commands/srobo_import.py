@@ -1,7 +1,8 @@
 import json
 from pathlib import Path
+from typing import Any, Dict
 
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 from django.db import IntegrityError
 
 from assets.models import Asset, AssetCode, AssetModel, Manufacturer, Node
@@ -11,10 +12,10 @@ class Command(BaseCommand):
 
     help = 'Import assets from Student Robotics JSON format'  # noqa: A003
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument('data_file', type=Path)
 
-    def handle(self, *args, **options):
+    def handle(self, *args: Any, **options: Any) -> None:
         data_file: Path = options['data_file']
         self.stdout.write(f"Importing from {data_file}")
 
@@ -82,7 +83,7 @@ class Command(BaseCommand):
         Node.objects.get(name="unknown-location").mark_out_of_tree(recursive=True)
         Node.objects.get(name="disposed-of").mark_out_of_tree(recursive=True)
 
-    def _add_asset(self, data) -> None:
+    def _add_asset(self, data: Dict[str, str]) -> None:
         asset_model, _ = AssetModel.objects.get_or_create(
             name=data["asset_type"],
             manufacturer=self._default_manufacturer,

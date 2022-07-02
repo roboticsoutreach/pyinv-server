@@ -25,7 +25,7 @@ class AssetModelViewSet(viewsets.ModelViewSet):
         'manufacturer__slug',
     ]
 
-    def perform_destroy(self, instance):
+    def perform_destroy(self, instance: AssetModel) -> None:
         try:
             return super(AssetModelViewSet, self).perform_destroy(instance)
         except ProtectedError:

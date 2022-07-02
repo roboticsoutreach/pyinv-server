@@ -3,7 +3,7 @@
 CMD:=
 PYMODULE:=pyinv
 MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
-APPS:=
+APPS:=assets
 SPHINX_ARGS:=docs/ docs/_build -nWE
 
 all: test check lint
@@ -24,7 +24,7 @@ docs-serve:
 	$(CMD) sphinx-autobuild --port 8001 $(SPHINX_ARGS)
 
 type: 
-	$(CMD) mypy $(PYMODULE) $(TESTS) 
+	cd pyinv && mypy $(APPS)
 
 test: | $(PYMODULE)
 	$(CMD) coverage run --source="$(PYMODULE)" $(PYMODULE)/manage.py test -v 2 $(APPS) $(PYMODULE)
