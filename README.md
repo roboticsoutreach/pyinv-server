@@ -11,7 +11,7 @@ Online Quartermaster and Inventory System.
     - UUID
     - Arbitrary String
     - Human-friendly Asset Code format with Damm checksum
-- REST API
+- REST API with OpenAPI Schema and Swagger docs
 - Django Admin for back office access to data
 
 ### Planned
@@ -21,6 +21,14 @@ Online Quartermaster and Inventory System.
 - Printer Support
 - Report generation
 - Barcode scanner support
+
+## Usage
+
+The server only provides an API, so you will probably want to use one of the clients to access the data:
+
+- [pyinv-ui](https://github.com/pyinv/pyinv-ui) - Web UI
+
+You can view documentation for the API at `/api/v1/docs`
 
 ## Deployment
 
