@@ -110,6 +110,7 @@ INSTALLED_APPS = [
     # Third Party
     "corsheaders",
     'django_filters',
+    'drf_spectacular',
     'rest_framework',
     'rest_registration',
     'treebeard',
@@ -206,9 +207,17 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'PyInv API',
+    'DESCRIPTION': 'Open Source Asset and Quartermaster System',
+    'VERSION': VERSION,
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 REGISTRATION_ENABLED = getattr(configuration, 'REGISTRATION_ENABLED', False)
