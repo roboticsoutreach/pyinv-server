@@ -16,7 +16,7 @@ class ManufacturerViewSet(viewsets.ModelViewSet):
     ordering_fields = ["name", "slug", 'created_at', 'updated_at']
     search_fields = ["name", "slug"]
 
-    def perform_destroy(self, instance):
+    def perform_destroy(self, instance: Manufacturer) -> None:
         try:
             return super(ManufacturerViewSet, self).perform_destroy(instance)
         except ProtectedError:

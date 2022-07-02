@@ -2,7 +2,7 @@
 
 import uuid
 
-import autoslug.fields
+import autoslug.fields  # type: ignore
 import django.db.models.deletion
 from django.db import migrations, models
 

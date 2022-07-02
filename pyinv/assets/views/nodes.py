@@ -1,3 +1,4 @@
+from django.http import HttpRequest
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
 from rest_framework.decorators import action
@@ -26,21 +27,21 @@ class NodeViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
     ]
 
     @action(detail=True)
-    def ancestors(self, request, pk=0):
+    def ancestors(self, request: HttpRequest, pk: int = 0) -> Response:
         """Fetch the ancestors of a node."""
         node = self.get_object()
         ancestors = node.get_ancestors()
         return Response(NodeSerializer(ancestors, many=True).data)
 
     @action(detail=True)
-    def children(self, request, pk=0):
+    def children(self, request: HttpRequest, pk: int = 0) -> Response:
         """Fetch the children of a node."""
         node = self.get_object()
         children = node.get_children()
         return Response(NodeSerializer(children, many=True).data)
 
     @action(detail=True)
-    def descendents(self, request, pk=0):
+    def descendents(self, request: HttpRequest, pk: int = 0) -> Response:
         """Fetch the descendents of a node."""
         node = self.get_object()
         descendents = node.get_descendants()

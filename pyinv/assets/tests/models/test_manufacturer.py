@@ -5,7 +5,7 @@ from assets.models import Manufacturer
 
 class TestManufacturerModel(TestCase):
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         self.bees = Manufacturer.objects.create(name="Bees")
 

@@ -1,6 +1,6 @@
 """Asset Tree Node."""
 
-from typing import Optional
+from typing import List, Optional
 from uuid import uuid4
 
 from django.core.exceptions import ValidationError
@@ -55,7 +55,7 @@ class Node(MP_Node):
         return self.get_parent()
 
     @property
-    def ancestors(self):
+    def ancestors(self) -> List['Node']:
         return self.get_ancestors().all()
 
     @property
@@ -69,7 +69,7 @@ class Node(MP_Node):
         else:
             return self.name or ""  # name is always set for a location
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.display_name
 
     def mark_out_of_tree(self, recursive: bool) -> None:
