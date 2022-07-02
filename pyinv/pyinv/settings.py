@@ -20,7 +20,7 @@ HOSTNAME = platform.node()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Validate Python version
-if parse_version(platform.python_version()) < parse_version("3.8.0"):
+if parse_version(platform.python_version()) < parse_version("3.8.0"):  # pragma: nocover
     raise RuntimeError(
         f"PyInv requires Python 3.8 or higher (current: Python {platform.python_version()})"
     )
@@ -32,7 +32,7 @@ if parse_version(platform.python_version()) < parse_version("3.8.0"):
 # Import configuration parameters
 try:
     from pyinv import configuration
-except ImportError as e:
+except ImportError as e:  # pragma: nocover
     if getattr(e, 'name') == 'configuration':
         raise ImproperlyConfigured(
             "Configuration file is not present. Please define pyinv/pyinv/configuration.py per the documentation."  # noqa: E501
@@ -42,7 +42,7 @@ except ImportError as e:
 # Enforce required configuration parameters
 for parameter in ['ALLOWED_HOSTS', 'DATABASE', 'SECRET_KEY']:
     if not hasattr(configuration, parameter):
-        raise ImproperlyConfigured(
+        raise ImproperlyConfigured(  # pragma: nocover
             "Required parameter {} is missing from configuration.py.".format(parameter)
         )
 
@@ -55,7 +55,7 @@ SECRET_KEY = getattr(configuration, 'SECRET_KEY')
 ADMINS = getattr(configuration, 'ADMINS', [])
 BASE_PATH = getattr(configuration, 'BASE_PATH', '')
 if BASE_PATH:
-    BASE_PATH = BASE_PATH.strip('/') + '/'  # Enforce trailing slash only
+    BASE_PATH = BASE_PATH.strip('/') + '/'  # Enforce trailing slash only  # pragma: nocover
 DATE_FORMAT = getattr(configuration, 'DATE_FORMAT', 'N j, Y')
 DATETIME_FORMAT = getattr(configuration, 'DATETIME_FORMAT', 'N j, Y g:i a')
 DEBUG = getattr(configuration, 'DEBUG', False)
