@@ -6,7 +6,7 @@ MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
 APPS:=assets
 SPHINX_ARGS:=docs/ docs/_build -nWE
 
-all: test check lint
+all: type test check lint
 
 lint: 
 	$(CMD) flake8 $(PYMODULE) $(TESTS)
