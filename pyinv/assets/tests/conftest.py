@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth.models import User
 
 from assets.models import Asset, AssetModel, Manufacturer, Node
-from assets.tests.api.client import TestClient
+from assets.tests.api.client import Client
 
 
 @pytest.fixture
@@ -11,12 +11,12 @@ def user() -> User:
 
 
 @pytest.fixture
-def api_client() -> TestClient:
-    return TestClient()
+def api_client() -> Client:
+    return Client()
 
 
 @pytest.fixture()
-def user_client(user: User, api_client: TestClient) -> TestClient:
+def user_client(user: User, api_client: Client) -> Client:
     api_client.force_authenticate(user)
     return api_client
 

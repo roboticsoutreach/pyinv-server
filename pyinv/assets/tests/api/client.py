@@ -17,7 +17,7 @@ class Response(response.Response):
         super().json()  # type: ignore
 
 
-class TestClient(APIClient):
+class Client(APIClient):
     def request(self, **kwargs) -> Response:  # type: ignore
         return super().request(**kwargs)  # type: ignore
 
