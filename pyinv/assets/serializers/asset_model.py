@@ -1,6 +1,9 @@
+from typing import Any, Dict
+
 from rest_framework import serializers
 
-from assets.models import AssetModel, Manufacturer
+from assets.models import AssetModel, Manufacturer, Node
+from pyinv.api_exceptions import UnableToChangeContainerState
 
 from .manufacturer import ManufacturerLinkSerializer
 
@@ -22,6 +25,7 @@ class AssetModelSerializer(serializers.ModelSerializer):
         source="manufacturer",
         queryset=Manufacturer.objects.all()
     )
+    is_container = serializers.BooleanField(default=False)
     asset_count = serializers.IntegerField(read_only=True, source="asset_set.count")
 
     class Meta:
@@ -36,3 +40,12 @@ class AssetModelSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         )
+
+    def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        # If we are updating an existing model to not be a container, check that all of the associated
+        # nodes are empty.
+        if self.instance and "is_container" in data and not data["is_container"]:
+            assets = self.instance.asset_set.all()  # type: ignore[union-attr]
+            if Node.objects.filter(asset__in=assets, numchild__gt=0).exists():
+                raise UnableToChangeContainerState()
+        return data
