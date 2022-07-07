@@ -1,0 +1,2 @@
+[tool.coverage.report]
+omit = ["*/tests/*", "*/migrations/*", "pyinv/asgi.py", "pyinv/wsgi.py", "manage.py"]

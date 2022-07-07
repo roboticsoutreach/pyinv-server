@@ -1,5 +1,3 @@
-from typing import Optional
-
 import django_filters
 from django.core.exceptions import ValidationError
 from django.db.models import QuerySet
@@ -31,10 +29,8 @@ class NodeFilterSet(django_filters.FilterSet):
         except (Node.DoesNotExist, ValidationError):
             return Node.objects.none()
 
-    def filter_is_container(self, queryset: QuerySet[Node], name: str, value: Optional[bool]) -> QuerySet[Node]:
-        if value is None:
-            return queryset
-        elif value is True:
+    def filter_is_container(self, queryset: QuerySet[Node], name: str, value: bool) -> QuerySet[Node]:
+        if value:
             return (
                 queryset.filter(node_type="A", asset__asset_model__is_container=True)
                 | queryset.filter(node_type="L")

@@ -13,12 +13,13 @@ attrs==21.4.0
     #   -r requirements.txt
     #   flake8-bugbear
     #   jsonschema
+    #   pytest
 cffi==1.15.1
     # via
     #   -r requirements.txt
     #   cryptography
 coverage[toml]==6.4.1
-    # via -r requirements-dev.in
+    # via pytest-cov
 cryptography==37.0.2
     # via -r requirements.txt
 damm32==1.2.1
@@ -90,6 +91,8 @@ inflection==0.5.1
     # via
     #   -r requirements.txt
     #   drf-spectacular
+iniconfig==1.1.1
+    # via pytest
 isort==5.10.1
     # via
     #   -r requirements-dev.in
@@ -106,6 +109,12 @@ mypy==0.961
     #   django-stubs
 mypy-extensions==0.4.3
     # via mypy
+packaging==21.3
+    # via pytest
+pluggy==1.0.0
+    # via pytest
+py==1.11.0
+    # via pytest
 pycodestyle==2.8.0
     # via
     #   flake8
@@ -121,10 +130,21 @@ pyjwt==2.4.0
     # via
     #   -r requirements.txt
     #   djangorestframework-simplejwt
+pyparsing==3.0.9
+    # via packaging
 pyrsistent==0.18.1
     # via
     #   -r requirements.txt
     #   jsonschema
+pytest==7.1.2
+    # via
+    #   -r requirements-dev.in
+    #   pytest-cov
+    #   pytest-django
+pytest-cov==3.0.0
+    # via -r requirements-dev.in
+pytest-django==4.5.2
+    # via -r requirements-dev.in
 pytz==2022.1
     # via
     #   -r requirements.txt
@@ -145,6 +165,7 @@ tomli==2.0.1
     #   coverage
     #   django-stubs
     #   mypy
+    #   pytest
 types-pytz==2022.1.1
     # via django-stubs
 types-pyyaml==6.0.9

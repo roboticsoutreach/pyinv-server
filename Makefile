@@ -6,7 +6,7 @@ MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
 APPS:=assets
 SPHINX_ARGS:=docs/ docs/_build -nWE
 
-all: test check lint
+all: type test check lint
 
 lint: 
 	$(CMD) flake8 $(PYMODULE) $(TESTS)
@@ -27,11 +27,10 @@ type:
 	cd pyinv && mypy $(APPS)
 
 test: | $(PYMODULE)
-	$(CMD) coverage run --source="$(PYMODULE)" $(PYMODULE)/manage.py test -v 2 $(APPS) $(PYMODULE)
-	$(CMD) coverage report
+	cd pyinv && pytest --cov=. $(APPS) $(PYMODULE)
 
-test-cov: test | $(PYMODULE)
-	$(CMD) coverage html -d htmlcov
+test-cov:
+	cd pyinv && pytest --cov=. $(APPS) $(PYMODULE) --cov-report html
 
 isort:
 	$(CMD) isort $(PYMODULE) $(TESTS)
