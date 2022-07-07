@@ -98,11 +98,60 @@ class Damm32AssetCodeStrategy(AssetCodeStrategy):
             raise ValidationError(f"Invalid asset code format: {asset_code}")
 
 
+class StudentRoboticsAssetCodeStrategy(AssetCodeStrategy):
+    """
+    Validate of Student Robotics Asset Codes.
+
+    Note: The implementation in the Student Robotics tools does not have a
+    compatible software licence with PyInv. The following implementation was
+    written by inspecting the codes in the existing Student Robotics inventory,
+    without inspection of the implementation in srobo/tools.
+    """
+
+    name = "Student Robotics"
+
+    ALPHABET = [
+        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F",
+        "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "T", "U", "V", "W", "X", "Y",
+    ]
+    ALPHABET_SET = set(ALPHABET)
+
+    def normalise(self, asset_code: str) -> str:
+        asset_code = asset_code.strip().upper()
+        if asset_code.startswith('SR'):
+            return asset_code[2:]
+        else:
+            return asset_code
+
+    def luhn(self, asset_code: str) -> int:
+        base = len(self.ALPHABET)
+        as_vals = [self.ALPHABET.index(c) for c in reversed(asset_code)]
+        total = sum(as_vals[::2]) + sum(sum(divmod(i * 2, base)) for i in as_vals[1::2])
+        return total % base
+
+    def validate(self, asset_code: str) -> None:
+        """
+        Validate an asset code.
+        :param asset_code: Asset Code to validate.
+        :raises django.core.exceptions.ValidationError: The asset code was invalid.
+        """
+        asset_code = self.normalise(asset_code)
+
+        invalid_characters = set(asset_code) - self.ALPHABET_SET
+        if invalid_characters:
+            chars = ", ".join(invalid_characters)
+            raise ValidationError(f"Invalid characters in code: {chars}")
+
+        if self.luhn(asset_code) != 0:
+            raise ValidationError("The check digit was invalid.")
+
+
 class AssetCodeType(str, Enum):
     """Available Asset Code Types."""
 
     ARBITRARY = "A"
     DAMM32 = "D"
+    SROBO = "S"
 
     @classmethod
     def strategy_mapping(cls) -> Dict['AssetCodeType', AssetCodeStrategy]:
@@ -110,6 +159,7 @@ class AssetCodeType(str, Enum):
         return {
             AssetCodeType.ARBITRARY: ArbitraryStringAssetCodeStrategy(),
             AssetCodeType.DAMM32: Damm32AssetCodeStrategy(),
+            AssetCodeType.SROBO: StudentRoboticsAssetCodeStrategy(),
         }
 
     def get_strategy(self) -> AssetCodeStrategy:
