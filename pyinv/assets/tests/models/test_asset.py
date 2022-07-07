@@ -1,5 +1,8 @@
+import pytest
+from django.db import IntegrityError
 from django.test import TestCase
 
+from assets.asset_codes import AssetCodeType
 from assets.models import Asset, AssetCode, AssetModel, Manufacturer, Node
 
 
@@ -60,3 +63,34 @@ class TestAsset(TestCase):
         """Test the string representation."""
         asset = Asset.objects.create(asset_model=self.asset_model)
         self.assertEqual(str(asset), f"foo bar ({asset.id})")
+
+
+@pytest.mark.django_db
+class TestAssetCodeGeneration:
+    """Test the Asset.add_asset_code function."""
+
+    def test_assign_asset_code(self, asset: Asset) -> None:
+        assert "ABC" not in asset.asset_codes
+        asset.add_asset_code(AssetCodeType.ARBITRARY, "ABC")
+        assert "ABC" in asset.asset_codes
+
+    def test_assign_duplicate_code(self, asset: Asset, container: Asset) -> None:
+        asset.add_asset_code(AssetCodeType.ARBITRARY, "ABC")
+
+        with pytest.raises(IntegrityError, match="UNIQUE constraint failed: assets_assetcode.code"):
+            container.add_asset_code(AssetCodeType.ARBITRARY, "ABC")
+
+    def test_generate_asset_code(self, asset: Asset) -> None:
+        code = asset.add_asset_code(AssetCodeType.DAMM32, None)
+        assert code.code in asset.asset_codes
+
+    def test_unable_to_generate_asset_code(self, asset: Asset) -> None:
+        with pytest.raises(ValueError, match="Unable to generate an asset code of that type."):
+            asset.add_asset_code(AssetCodeType.SROBO, None)
+
+    def test_bad_provided_code(self, asset: Asset) -> None:
+        with pytest.raises(
+            ValueError,
+            match=r"Provided asset code is not valid: \['The check digit was invalid.'\]",
+        ):
+            asset.add_asset_code(AssetCodeType.SROBO, "srABCABC")
