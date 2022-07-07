@@ -14,7 +14,7 @@ cryptography==37.0.2
     # via -r requirements.in
 damm32==1.2.1
     # via -r requirements.in
-django==3.2.13
+django==3.2.14
     # via
     #   -r requirements.in
     #   django-cors-headers

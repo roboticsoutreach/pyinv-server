@@ -1,4 +1,4 @@
-django>3.2,<3.3  # LTS
+django>=3.2.14,<3.3  # LTS
 django-autoslug
 django-filter
 django-cors-headers
