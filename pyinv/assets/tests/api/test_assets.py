@@ -39,7 +39,7 @@ class TestAssetListEndpoint(APITestCase):
         assert len(data["results"]) == 1
 
         result = data["results"][0]
-        self.assert_like_asset(result)
+        self.assert_like_asset_with_node(result)
 
     @pytest.mark.usefixtures("asset", "container")
     def test_multiple_results_single_page(self, api_client: Client) -> None:
@@ -161,4 +161,4 @@ class TestAssetGetIndividualEndpoint(APITestCase):
         assert resp.status_code == 200
 
         result = resp.json()
-        self.assert_like_asset(result)
+        self.assert_like_asset_with_node(result)

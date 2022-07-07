@@ -21,6 +21,19 @@ class APITestCase(PermissionsMixin):
     def assert_like_asset(self, data: Dict[str, Any]) -> None:
         assert data.keys() == {
             'id', 'display_name', 'asset_model', 'asset_codes', 'first_asset_code',
+            'created_at', 'updated_at', 'extra_data',
+        }
+        assert UUID(data["id"])
+        assert isinstance(data["display_name"], str)
+        self.assert_like_asset_model_link(data["asset_model"])
+        assert isinstance(data["first_asset_code"], str)
+        assert isinstance(data["asset_codes"], list)
+        self.assert_valid_timestamps(data)
+        assert isinstance(data["extra_data"], dict)
+
+    def assert_like_asset_with_node(self, data: Dict[str, Any]) -> None:
+        assert data.keys() == {
+            'id', 'display_name', 'asset_model', 'asset_codes', 'first_asset_code',
             'created_at', 'updated_at', 'extra_data', 'node',
         }
         assert UUID(data["id"])
@@ -30,6 +43,8 @@ class APITestCase(PermissionsMixin):
         assert isinstance(data["asset_codes"], list)
         self.assert_valid_timestamps(data)
         assert isinstance(data["extra_data"], dict)
+        if data["node"]:
+            self.assert_like_node(data["node"])
 
     def assert_like_asset_model_link(self, data: Dict[str, Any]) -> None:
         assert data.keys() == {'name', 'slug'}
@@ -59,6 +74,36 @@ class APITestCase(PermissionsMixin):
         assert isinstance(data["name"], str)
         assert isinstance(data["slug"], str)
         self.assert_valid_timestamps(data)
+
+    def assert_like_node_link(self, data: Dict[str, Any]) -> None:
+        assert data.keys() == {'id', 'display_name', 'node_type', 'numchild', 'is_container'}
+
+    def assert_like_node(self, data: Dict[str, Any]) -> None:
+        assert data.keys() == {
+            'id', 'display_name', 'node_type', 'numchild',
+            'is_container', 'name', 'asset', 'depth', 'ancestors',
+        }
+        assert UUID(data["id"])
+        assert isinstance(data["display_name"], str)
+        assert data["node_type"] in ["A", "L"]
+        assert isinstance(data["is_container"], bool)
+        assert isinstance(data["numchild"], int)
+        assert isinstance(data["depth"], int)
+        assert isinstance(data["ancestors"], list)
+
+        if data["asset"]:
+            self.assert_like_asset(data["asset"])
+
+        if data["ancestors"]:
+            for ancestor in data["ancestors"]:
+                self.assert_like_node_link(ancestor)
+
+        # Sanity checks
+        assert data["asset"] or data["node_type"] == "L"
+        assert data["node_type"] == "A" or data["name"]
+        assert data["node_type"] == "A" or data["display_name"] == data["name"]
+        assert data["numchild"] == 0 or data["is_container"]
+        assert data["depth"] - 1 == len(data["ancestors"])
 
     def assert_valid_timestamps(self, data: Dict[str, Any]) -> None:
         assert dateparse.parse_datetime(data["updated_at"]) is not None

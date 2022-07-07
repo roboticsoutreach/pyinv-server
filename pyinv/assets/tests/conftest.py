@@ -74,3 +74,10 @@ def named_container_with_child(container_with_child: Asset) -> Asset:
     container_with_child.node.name = "node-name"
     container_with_child.node.save()
     return container_with_child
+
+
+@pytest.fixture
+def location() -> Node:
+    node = Node(node_type="L", name="location")
+    Node.add_root(instance=node)
+    return node
