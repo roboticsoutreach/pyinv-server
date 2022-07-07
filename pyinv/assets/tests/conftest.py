@@ -47,6 +47,13 @@ def asset(asset_model: AssetModel) -> Asset:
 
 
 @pytest.fixture
+def asset_with_code(asset_model: AssetModel) -> Asset:
+    asset = Asset.objects.create(asset_model=asset_model)
+    asset.assetcode_set.create(code_type="A", code="asset-code")
+    return asset
+
+
+@pytest.fixture
 def container(container_model: AssetModel) -> Asset:
     return Asset.objects.create(asset_model=container_model)
 
@@ -60,3 +67,10 @@ def container_with_child(asset_model: AssetModel, container_model: AssetModel) -
     container_node.refresh_from_db()
     container_node.add_child(node_type="A", asset=asset)
     return container
+
+
+@pytest.fixture
+def named_container_with_child(container_with_child: Asset) -> Asset:
+    container_with_child.node.name = "node-name"
+    container_with_child.node.save()
+    return container_with_child

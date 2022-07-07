@@ -9,21 +9,8 @@ from assets.tests.api.client import Client
 from .base import APITestCase
 
 
-class AssetModelTestCase(APITestCase):
-
-    def assert_like_asset_model(self, data: Dict[str, Any]) -> None:
-        assert data.keys() == {
-            'name', 'slug', 'manufacturer', 'manufacturer_slug',
-            'is_container', 'asset_count', 'created_at', 'updated_at',
-        }
-        assert isinstance(data["name"], str)
-        assert isinstance(data["slug"], str)
-        assert isinstance(data["is_container"], bool)
-        assert isinstance(data["asset_count"], int)
-
-
 @pytest.mark.django_db
-class TestAssetModelListEndpoint(AssetModelTestCase):
+class TestAssetModelListEndpoint(APITestCase):
     """Test the endpoint for listing, searching and sorting asset models."""
 
     def _subject(
@@ -118,7 +105,7 @@ class TestAssetModelListEndpoint(AssetModelTestCase):
 
 
 @pytest.mark.django_db
-class TestAssetModelPostEndpoint(AssetModelTestCase):
+class TestAssetModelPostEndpoint(APITestCase):
 
     _subject = "/api/v1/asset-models/"
     _permission = "add_assetmodel"
@@ -163,7 +150,7 @@ class TestAssetModelPostEndpoint(AssetModelTestCase):
 
 
 @pytest.mark.django_db
-class TestAssetModelGetIndividualEndpoint(AssetModelTestCase):
+class TestAssetModelGetIndividualEndpoint(APITestCase):
 
     _subject = "/api/v1/asset-models"
 
@@ -183,7 +170,7 @@ class TestAssetModelGetIndividualEndpoint(AssetModelTestCase):
 
 @pytest.mark.django_db
 @pytest.mark.usefixtures("asset_model")
-class TestAssetModelPutIndividualEndpoint(AssetModelTestCase):
+class TestAssetModelPutIndividualEndpoint(APITestCase):
 
     _subject = "/api/v1/asset-models/foo-model/"
     _permission = "change_assetmodel"
@@ -214,7 +201,7 @@ class TestAssetModelPutIndividualEndpoint(AssetModelTestCase):
 
 @pytest.mark.django_db
 @pytest.mark.usefixtures("asset_model")
-class TestAssetModelPatchIndividualEndpoint(AssetModelTestCase):
+class TestAssetModelPatchIndividualEndpoint(APITestCase):
 
     _subject = "/api/v1/asset-models/foo-model/"
     _permission = "change_assetmodel"
@@ -245,7 +232,7 @@ class TestAssetModelPatchIndividualEndpoint(AssetModelTestCase):
 
 @pytest.mark.django_db
 @pytest.mark.usefixtures("container_with_child")
-class TestAssetModelCannotChangeContainerStateIfInvalid(AssetModelTestCase):
+class TestAssetModelCannotChangeContainerStateIfInvalid(APITestCase):
 
     _subject = "/api/v1/asset-models/bar-model/"
     _permission = "change_assetmodel"
@@ -277,7 +264,7 @@ class TestAssetModelCannotChangeContainerStateIfInvalid(AssetModelTestCase):
 
 @pytest.mark.django_db
 @pytest.mark.usefixtures("asset_model")
-class TestAssetModelDeleteIndividualEndpoint(AssetModelTestCase):
+class TestAssetModelDeleteIndividualEndpoint(APITestCase):
 
     _subject = "/api/v1/asset-models/foo-model/"
     _permission = "delete_assetmodel"

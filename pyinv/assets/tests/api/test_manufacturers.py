@@ -9,16 +9,8 @@ from assets.tests.api.client import Client
 from .base import APITestCase
 
 
-class ManufacturerTestCase(APITestCase):
-
-    def assert_like_manufacturer(self, data: Dict[str, Any]) -> None:
-        assert data.keys() == {"name", "slug", "updated_at", "created_at"}
-        assert isinstance(data["name"], str)
-        assert isinstance(data["slug"], str)
-
-
 @pytest.mark.django_db
-class TestManufacturerListEndpoint(ManufacturerTestCase):
+class TestManufacturerListEndpoint(APITestCase):
     """Test the endpoint for listing, searching and sorting manufacturers."""
 
     def _subject(
@@ -113,7 +105,7 @@ class TestManufacturerListEndpoint(ManufacturerTestCase):
 
 
 @pytest.mark.django_db
-class TestManufacturerPostEndpoint(ManufacturerTestCase):
+class TestManufacturerPostEndpoint(APITestCase):
 
     _subject = "/api/v1/manufacturers/"
     _permission = "add_manufacturer"
@@ -167,7 +159,7 @@ class TestManufacturerPostEndpoint(ManufacturerTestCase):
 
 
 @pytest.mark.django_db
-class TestManufacturerGetIndividualEndpoint(ManufacturerTestCase):
+class TestManufacturerGetIndividualEndpoint(APITestCase):
 
     _subject = "/api/v1/manufacturers"
 
@@ -188,7 +180,7 @@ class TestManufacturerGetIndividualEndpoint(ManufacturerTestCase):
 
 @pytest.mark.django_db
 @pytest.mark.usefixtures("manufacturer")
-class TestManufacturerPutIndividualEndpoint(ManufacturerTestCase):
+class TestManufacturerPutIndividualEndpoint(APITestCase):
 
     _subject = "/api/v1/manufacturers/foo/"
     _permission = "change_manufacturer"
@@ -219,7 +211,7 @@ class TestManufacturerPutIndividualEndpoint(ManufacturerTestCase):
 
 @pytest.mark.django_db
 @pytest.mark.usefixtures("manufacturer")
-class TestManufacturerPatchIndividualEndpoint(ManufacturerTestCase):
+class TestManufacturerPatchIndividualEndpoint(APITestCase):
 
     _subject = "/api/v1/manufacturers/foo/"
     _permission = "change_manufacturer"
@@ -250,7 +242,7 @@ class TestManufacturerPatchIndividualEndpoint(ManufacturerTestCase):
 
 @pytest.mark.django_db
 @pytest.mark.usefixtures("manufacturer")
-class TestManufacturerDeleteIndividualEndpoint(ManufacturerTestCase):
+class TestManufacturerDeleteIndividualEndpoint(APITestCase):
 
     _subject = "/api/v1/manufacturers/foo/"
     _permission = "delete_manufacturer"
