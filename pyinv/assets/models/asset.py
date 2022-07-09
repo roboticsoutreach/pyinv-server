@@ -25,9 +25,9 @@ class Asset(models.Model):
     @property
     def display_name(self) -> str:
         try:
-            return self.node.name or str(f"{self.asset_model} ({self.first_asset_code})")
+            return self.node.name or str(f"{self.asset_model.display_name} ({self.first_asset_code})")
         except Asset.node.RelatedObjectDoesNotExist:
-            return str(self.asset_model)
+            return str(f"{self.asset_model.display_name} ({self.first_asset_code})")
 
     @property
     def first_asset_code(self) -> str:
@@ -44,7 +44,7 @@ class Asset(models.Model):
         return [str(self.id)] + [code.code for code in self.assetcode_set.all()]
 
     def __str__(self) -> str:
-        return f"{self.display_name} ({self.first_asset_code})"
+        return self.display_name
 
     def add_asset_code(self, code_type: AssetCodeType, code: Optional[str]) -> AssetCode:
         """

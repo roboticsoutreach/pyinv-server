@@ -53,11 +53,12 @@ class APITestCase(PermissionsMixin):
 
     def assert_like_asset_model(self, data: Dict[str, Any]) -> None:
         assert data.keys() == {
-            'name', 'slug', 'manufacturer', 'manufacturer_slug',
+            'name', 'slug', 'display_name', 'manufacturer', 'manufacturer_slug',
             'is_container', 'asset_count', 'created_at', 'updated_at',
         }
         assert isinstance(data["name"], str)
         assert isinstance(data["slug"], str)
+        assert isinstance(data["display_name"], str)
         self.assert_like_manufacturer_link(data["manufacturer"])
         assert isinstance(data["manufacturer_slug"], str)
         assert isinstance(data["is_container"], bool)

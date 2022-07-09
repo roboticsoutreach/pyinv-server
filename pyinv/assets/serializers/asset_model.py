@@ -33,6 +33,7 @@ class AssetModelSerializer(serializers.ModelSerializer):
         fields = (
             'name',
             'slug',
+            'display_name',
             'manufacturer',
             'manufacturer_slug',
             'is_container',

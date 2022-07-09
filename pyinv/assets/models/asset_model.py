@@ -23,5 +23,11 @@ class AssetModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
+    @property
+    def display_name(self) -> str:
+        if AssetModel.objects.filter(name=self.name).count() == 1:
+            return self.name
         return f"{self.manufacturer.name} {self.name}"
+
+    def __str__(self) -> str:
+        return self.display_name
