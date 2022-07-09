@@ -43,7 +43,7 @@ class TestAsset(TestCase):
     def test_asset_display_name(self) -> None:
         """Test the display name without a node."""
         asset = Asset.objects.create(asset_model=self.asset_model)
-        self.assertEqual(asset.display_name, "bar")
+        self.assertTrue(asset.display_name.startswith("bar"))
 
     def test_asset_display_name_node(self) -> None:
         """Test the display name with an unnamed node."""
