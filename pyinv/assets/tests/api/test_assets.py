@@ -87,7 +87,7 @@ class TestAssetListEndpoint(APITestCase):
         assert data["previous"] is None
         assert len(data["results"]) == 1
 
-        assert data["results"][0]["display_name"] == "Bar Bar Model"
+        assert data["results"][0]["display_name"] == "Bar Model"
 
     @pytest.mark.usefixtures("asset_with_code", "container")
     def test_find_by_asset_code(self, api_client: Client) -> None:
@@ -97,7 +97,7 @@ class TestAssetListEndpoint(APITestCase):
         assert data["previous"] is None
         assert len(data["results"]) == 1
 
-        assert data["results"][0]["display_name"] == "Foo Foo Model"
+        assert data["results"][0]["display_name"] == "Foo Model"
 
     @pytest.mark.usefixtures("asset_with_code", "container")
     def test_find_by_asset_code_no_results(self, api_client: Client) -> None:
@@ -115,7 +115,7 @@ class TestAssetListEndpoint(APITestCase):
         assert data["previous"] is None
         assert len(data["results"]) == 1
 
-        assert data["results"][0]["display_name"] == "Foo Foo Model"
+        assert data["results"][0]["display_name"] == "Foo Model"
 
     @pytest.mark.usefixtures("asset_model", "container_model")
     def test_search_no_results(self, api_client: Client) -> None:
@@ -133,7 +133,7 @@ class TestAssetListEndpoint(APITestCase):
         assert data["previous"] is None
         assert len(data["results"]) == 1
 
-        assert data["results"][0]["display_name"] == "Foo Foo Model"
+        assert data["results"][0]["display_name"] == "Foo Model"
 
     @pytest.mark.usefixtures("named_container_with_child")
     def test_search_by_node_name(self, api_client: Client) -> None:

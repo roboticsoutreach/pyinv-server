@@ -43,14 +43,14 @@ class TestAsset(TestCase):
     def test_asset_display_name(self) -> None:
         """Test the display name without a node."""
         asset = Asset.objects.create(asset_model=self.asset_model)
-        self.assertEqual(asset.display_name, "foo bar")
+        self.assertEqual(asset.display_name, "bar")
 
     def test_asset_display_name_node(self) -> None:
         """Test the display name with an unnamed node."""
         asset = Asset.objects.create(asset_model=self.asset_model)
         node = Node.add_root(node_type="A", asset=asset)
         self.assertEqual(asset.node, node)
-        self.assertEqual(asset.display_name, f"foo bar ({asset.first_asset_code})")
+        self.assertEqual(asset.display_name, f"bar ({asset.first_asset_code})")
 
     def test_asset_display_name_named_node(self) -> None:
         """Test the display name with a named node."""
@@ -62,7 +62,7 @@ class TestAsset(TestCase):
     def test_str(self) -> None:
         """Test the string representation."""
         asset = Asset.objects.create(asset_model=self.asset_model)
-        self.assertEqual(str(asset), f"foo bar ({asset.id})")
+        self.assertEqual(str(asset), f"bar ({asset.id})")
 
 
 @pytest.mark.django_db

@@ -66,7 +66,7 @@ class TestNode(TestCase):
         """Test that we can link a node to an asset info."""
         node = Node.add_root(node_type="A", asset=self.asset)
         self.assertEqual(node.asset.asset_model, self.asset.asset_model)
-        self.assertEqual(str(node), f"foo bar ({node.asset.first_asset_code})")
+        self.assertEqual(str(node), f"bar ({node.asset.first_asset_code})")
 
     def test_asset_link_with_name(self) -> None:
         """Test that we can link a node to an asset info with a name."""

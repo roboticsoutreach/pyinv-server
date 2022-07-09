@@ -26,9 +26,9 @@ class TestAssetModel(TestCase):
         self.assertEqual(self.not_container.slug, "honey-pot")
 
     def test_str(self) -> None:
-        self.assertEqual(str(self.container), "BeeCorp Hive")
+        self.assertEqual(str(self.container), "Hive")
 
     def test_protected_from_manufacturer_delete(self) -> None:
         """Test that deleting the manager does not casade."""
-        with self.assertRaisesRegex(ProtectedError, "BeeCorp Hive"):
+        with self.assertRaisesRegex(ProtectedError, "Hive"):
             self.manufacturer.delete()
