@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import Any, Dict
 
 from django.core.management.base import BaseCommand, CommandParser
-from django.db import IntegrityError
 
+from assets.asset_codes import AssetCodeType
 from assets.models import Asset, AssetCode, AssetModel, Manufacturer, Node
 
 
@@ -93,8 +93,4 @@ class Command(BaseCommand):
             asset_model=asset_model,
             extra_data=data["data"],
         )
-
-        try:
-            AssetCode.objects.get_or_create(asset=asset, code=data["asset_code"], code_type="A")
-        except IntegrityError:
-            print("WARNING: You have run the import multiple times!")
+        asset.add_asset_code(AssetCodeType.SROBO, data["asset_code"])
