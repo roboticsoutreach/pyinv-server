@@ -3,7 +3,6 @@ django-autoslug
 django-filter
 django-cors-headers
 djangorestframework
-django-rest-registration
 django-stubs-ext
 drf-spectacular
 django-treebeard
