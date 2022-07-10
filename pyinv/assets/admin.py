@@ -4,13 +4,32 @@ from django.contrib.auth.models import User
 from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
 
-from .models import Asset, AssetCode, AssetModel, Manufacturer, Node
+from .models import (
+    Asset,
+    AssetCode,
+    AssetEvent,
+    AssetModel,
+    ChangeSet,
+    Manufacturer,
+    Node,
+)
 
 
 class AssetCodeAdmin(admin.ModelAdmin):
     list_display = ["code", "code_type"]
     list_filter = ["code_type"]
     search_fields = ["code"]
+
+
+class AssetEventAdmin(admin.ModelAdmin):
+    list_display = ["asset", "changeset"]
+    list_filter = ["changeset__user"]
+
+
+class ChangeSetAdmin(admin.ModelAdmin):
+    list_display = ["timestamp", "user", "comment"]
+    list_filter = ["timestamp", "user"]
+    search_fields = ["comment"]
 
 
 class AssetAdmin(admin.ModelAdmin):
@@ -44,8 +63,10 @@ class PyInvAdminSite(admin.AdminSite):
 
 admin_site = PyInvAdminSite()
 admin_site.register(AssetCode, AssetCodeAdmin)
+admin_site.register(AssetEvent, AssetEventAdmin)
 admin_site.register(Asset, AssetAdmin)
 admin_site.register(AssetModel, AssetModelAdmin)
+admin_site.register(ChangeSet, ChangeSetAdmin)
 admin_site.register(Manufacturer, ManufacturerAdmin)
 admin_site.register(Node, NodeAdmin)
 admin_site.register(User, UserAdmin)
