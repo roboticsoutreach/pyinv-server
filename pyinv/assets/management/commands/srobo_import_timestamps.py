@@ -22,7 +22,7 @@ class Command(BaseCommand):
                 if field.name == 'updated_at':
                     field.auto_now = False  # type: ignore
 
-            if asset.assetevent_set.count() == 0:  # type: ignore
+            if asset.assetevent_set.count() == 0:
                 # Not all assets have history, some history was destroyed in a rebase in 2014.
                 asset.created_at = unknown_date
                 asset.updated_at = unknown_date

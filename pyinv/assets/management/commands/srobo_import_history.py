@@ -56,7 +56,7 @@ class Command(BaseCommand):
                     continue
 
                 # If the asset has been deleted and un-deleted, mark it as restored from lost.
-                if change_type == "added" and asset.assetevent_set.filter(event_type="CR").exists():  # type: ignore
+                if change_type == "added" and asset.assetevent_set.filter(event_type="CR").exists():
                     change_type = "move"
                     data = {
                         "old": None,
