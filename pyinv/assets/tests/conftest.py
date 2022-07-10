@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth.models import User
 
 from assets.models import Asset, AssetModel, Manufacturer, Node
-from assets.tests.api.client import Client
+from pyinv.tests.client import Client
 
 
 @pytest.fixture

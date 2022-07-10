@@ -5,7 +5,7 @@ import pytest
 from assets.models import Asset
 
 from .base import APITestCase
-from .client import Client
+from pyinv.tests.client import Client
 
 
 @pytest.mark.django_db
