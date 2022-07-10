@@ -1,4 +1,5 @@
 import platform
+from datetime import timedelta
 from pathlib import Path
 
 import django_stubs_ext
@@ -221,6 +222,12 @@ SPECTACULAR_SETTINGS = {
 }
 
 REGISTRATION_ENABLED = getattr(configuration, 'REGISTRATION_ENABLED', False)
+
+# SimpleJWT
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=300),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
 
 # REST Registration
 REST_REGISTRATION = {

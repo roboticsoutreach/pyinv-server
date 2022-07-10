@@ -4,9 +4,9 @@ from uuid import UUID
 import pytest
 
 from assets.models import Asset, Node
+from pyinv.tests.client import Client
 
 from .base import APITestCase
-from .client import Client
 
 
 @pytest.mark.django_db

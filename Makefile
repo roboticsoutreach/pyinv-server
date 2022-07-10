@@ -3,7 +3,7 @@
 CMD:=
 PYMODULE:=pyinv
 MANAGEPY:=$(CMD) ./$(PYMODULE)/manage.py
-APPS:=assets
+APPS:=assets pyinv
 SPHINX_ARGS:=docs/ docs/_build -nWE
 
 all: type test check lint
