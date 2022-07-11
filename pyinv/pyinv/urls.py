@@ -26,6 +26,7 @@ from assets.admin import admin_site
 
 api_urlpatterns = [
     path('', include('assets.urls')),
+    path('accounts/', include('accounts.urls')),
     path('auth/token/', TokenObtainPairView.as_view(), name='auth_token_obtain_pair'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='auth_token_refresh'),
     path('auth/token/verify/', TokenVerifyView.as_view(), name='auth_token_verify'),
