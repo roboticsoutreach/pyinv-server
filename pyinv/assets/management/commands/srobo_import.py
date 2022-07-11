@@ -81,7 +81,16 @@ class Command(BaseCommand):
                         parent.refresh_from_db()
 
         Node.objects.get(name="unknown-location").mark_out_of_tree(recursive=True)
+
+        # Delete everything in disposed-of
+        assets = []
+        for node in Node.objects.get(name="disposed-of").get_descendants():
+            if node.asset:
+                assets.append(node.asset)
         Node.objects.get(name="disposed-of").mark_out_of_tree(recursive=True)
+        for asset in assets:
+            asset.assetcode_set.all().delete()
+            asset.delete()
 
     def _add_asset(self, data: Dict[str, str]) -> None:
         asset_model, _ = AssetModel.objects.get_or_create(
