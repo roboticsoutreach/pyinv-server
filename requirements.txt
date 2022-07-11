@@ -19,7 +19,6 @@ django==3.2.14
     #   -r requirements.in
     #   django-cors-headers
     #   django-filter
-    #   django-rest-registration
     #   django-stubs-ext
     #   django-treebeard
     #   djangorestframework
@@ -31,8 +30,6 @@ django-cors-headers==3.13.0
     # via -r requirements.in
 django-filter==22.1
     # via -r requirements.in
-django-rest-registration==0.7.2
-    # via -r requirements.in
 django-stubs-ext==0.5.0
     # via -r requirements.in
 django-treebeard==4.5.1
@@ -40,7 +37,6 @@ django-treebeard==4.5.1
 djangorestframework==3.13.1
     # via
     #   -r requirements.in
-    #   django-rest-registration
     #   djangorestframework-simplejwt
     #   drf-spectacular
 djangorestframework-simplejwt==5.2.0

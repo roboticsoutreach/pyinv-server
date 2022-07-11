@@ -70,19 +70,6 @@ EMAIL: Dict[str, Union[str, int, bool]] = {
 # Title of the System
 SYSTEM_TITLE = "PyInv"
 
-# Settings for User Management and Registration
-
-# Allow users to register themselves. If set to False, only admins can create new users.
-REGISTRATION_ENABLED = False
-
-# The URLs on the frontend for the registration verification form. Used in the registration email.
-REGISTER_VERIFICATION_URL = None
-REGISTER_EMAIL_VERIFICATION_URL = None
-
-# Enable password resets. If set to False, users will not be able to reset their passwords.
-RESET_PASSWORD_ENABLED = False
-RESET_PASSWORD_VERIFICATION_URL = None
-
 # Time zone (default: UTC)
 TIME_ZONE = 'UTC'
 
