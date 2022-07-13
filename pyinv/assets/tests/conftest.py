@@ -1,7 +1,15 @@
 import pytest
 from django.contrib.auth.models import User
+from django.utils import timezone
 
-from assets.models import Asset, AssetModel, Manufacturer, Node
+from assets.models import (
+    Asset,
+    AssetEvent,
+    AssetModel,
+    ChangeSet,
+    Manufacturer,
+    Node,
+)
 from pyinv.tests.client import Client
 
 
@@ -81,3 +89,41 @@ def location() -> Node:
     node = Node(node_type="L", name="location")
     Node.add_root(instance=node)
     return node
+
+
+@pytest.fixture
+def changeset(user: User) -> ChangeSet:
+    return ChangeSet.objects.create(
+        timestamp=timezone.now(),
+        user=user,
+        comment="A set of changes",
+    )
+
+
+@pytest.fixture
+def changeset2(user: User) -> ChangeSet:
+    return ChangeSet.objects.create(
+        timestamp=timezone.now(),
+        user=user,
+        comment="Bees are good",
+    )
+
+
+@pytest.fixture
+def asset_event(changeset: ChangeSet, asset: Asset) -> AssetEvent:
+    return AssetEvent.objects.create(
+        changeset=changeset,
+        asset=asset,
+        event_type="CR",
+        data={"location": ["bees"]},
+    )
+
+
+@pytest.fixture
+def asset_event2(changeset2: ChangeSet, container: Asset) -> AssetEvent:
+    return AssetEvent.objects.create(
+        changeset=changeset2,
+        asset=container,
+        event_type="CR",
+        data={"location": ["bees"]},
+    )
