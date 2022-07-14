@@ -89,7 +89,6 @@ class Command(BaseCommand):
                 assets.append(node.asset)
         Node.objects.get(name="disposed-of").mark_out_of_tree(recursive=True)
         for asset in assets:
-            asset.assetcode_set.all().delete()
             asset.delete()
 
     def _add_asset(self, data: Dict[str, str]) -> None:
