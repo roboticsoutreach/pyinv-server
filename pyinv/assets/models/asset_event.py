@@ -20,6 +20,10 @@ class ChangeSet(models.Model):
     timestamp = models.DateTimeField()
 
     def __str__(self) -> str:
+        return self.display_name
+
+    @property
+    def display_name(self) -> str:
         return f"{self.timestamp} by {self.user}"
 
 
