@@ -31,6 +31,11 @@ class APITestCase(PermissionsMixin):
         self.assert_valid_timestamps(data)
         assert isinstance(data["extra_data"], dict)
 
+    def assert_like_asset_link(self, data: Dict[str, Any]) -> None:
+        assert data.keys() == {'id', 'display_name'}
+        assert UUID(data["id"])
+        assert isinstance(data["display_name"], str)
+
     def assert_like_asset_with_node(self, data: Dict[str, Any]) -> None:
         assert data.keys() == {
             'id', 'display_name', 'asset_model', 'asset_codes', 'first_asset_code',
@@ -105,6 +110,36 @@ class APITestCase(PermissionsMixin):
         assert data["node_type"] == "A" or data["display_name"] == data["name"]
         assert data["numchild"] == 0 or data["is_container"]
         assert data["depth"] - 1 == len(data["ancestors"])
+
+    def assert_like_user_link(self, data: Dict[str, Any]) -> None:
+        assert data.keys() == {'username', 'display_name'}
+        assert isinstance(data["username"], str)
+        assert isinstance(data["display_name"], str)
+
+    def assert_like_changeset(self, data: Dict[str, Any]) -> None:
+        assert data.keys() == {'id', 'timestamp', 'display_name', 'user', 'comment'}
+        assert UUID(data["id"])
+        assert dateparse.parse_datetime(data["timestamp"]) is not None
+        assert isinstance(data["display_name"], str)
+        self.assert_like_user_link(data["user"])
+        assert isinstance(data["comment"], str)
+
+    def assert_like_changeset_with_count(self, data: Dict[str, Any]) -> None:
+        assert data.keys() == {'id', 'timestamp', 'display_name', 'user', 'comment', 'event_count'}
+        assert UUID(data["id"])
+        assert dateparse.parse_datetime(data["timestamp"]) is not None
+        assert isinstance(data["display_name"], str)
+        assert isinstance(data["event_count"], int)
+        self.assert_like_user_link(data["user"])
+        assert isinstance(data["comment"], str)
+
+    def assert_like_asset_event(self, data: Dict[str, Any]) -> None:
+        assert data.keys() == {'id', 'changeset', 'event_type', 'asset', 'event_data'}
+        assert UUID(data["id"])
+        self.assert_like_changeset(data["changeset"])
+        assert data["event_type"] in ["CR", "MV"]
+        self.assert_like_asset_link(data["asset"])
+        assert isinstance(data["event_data"], dict)
 
     def assert_valid_timestamps(self, data: Dict[str, Any]) -> None:
         assert dateparse.parse_datetime(data["updated_at"]) is not None

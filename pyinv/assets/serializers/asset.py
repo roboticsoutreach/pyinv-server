@@ -6,6 +6,18 @@ from .asset_model import AssetModelLinkSerializer
 from .node_link import NodeLinkWithParentSerializer
 
 
+class AssetLinkSerializer(serializers.ModelSerializer):
+
+    id = serializers.UUIDField(read_only=True)  # noqa: A003
+
+    class Meta:
+        model = Asset
+        fields = (
+            'id',
+            'display_name',
+        )
+
+
 class AssetSerializer(serializers.ModelSerializer):
     """Serializer for Asset objects."""
 

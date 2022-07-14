@@ -22,3 +22,19 @@ class ProfileSerializer(serializers.ModelSerializer):
         if len(value) < 1:
             raise serializers.ValidationError("Expected at least 1 character")
         return value
+
+
+class UserLinkSerializer(serializers.ModelSerializer):
+
+    username = serializers.CharField(read_only=True)
+    display_name = serializers.SerializerMethodField("get_display_name", read_only=True)
+
+    def get_display_name(self, user: User) -> str:
+        return user.get_full_name() or user.username
+
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'display_name',
+        )
