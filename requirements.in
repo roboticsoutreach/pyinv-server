@@ -10,3 +10,4 @@ damm32
 
 djangorestframework-simplejwt
 cryptography
+psycopg2

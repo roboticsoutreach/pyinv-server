@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+  api:
+    build: .
+    ports:
+      - 8000:8000
+    environment:
+      - ALLOWED_HOSTS=*
+      - DATABASE__NAME=postgres
+      - DATABASE__USER=postgres
+      - DATABASE__PASSWORD=secret
+      - DATABASE__HOST=db
+      - DATABASE__PORT=5432
+      - SECRET_KEY=do_not_dare_use_me_in_production_or_else
+      - DEBUG=True
+    depends_on:
+      - db
+    command: "python3 pyinv/manage.py runserver 0.0.0.0:8000"

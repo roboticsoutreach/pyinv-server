@@ -12,18 +12,18 @@ import os
 #
 # Example: ALLOWED_HOSTS = ['pyinv.example.com', 'pyinv.internal.local']
 
-ALLOWED_HOSTS: List[str] = os.environ.get('DATABASE.NAME').split(',')
+ALLOWED_HOSTS: List[str] = os.environ.get('ALLOWED_HOSTS').split(',') if os.environ.get('ALLOWED_HOSTS') is not None else []
 
 # Database configuration. See the Django documentation for a complete list of available parameters:
 #   https://docs.djangoproject.com/en/stable/ref/settings/#databases
 # For production, you should probably use PostgreSQL
 DATABASE = {
     'ENGINE': 'django.db.backends.postgresql',
-    'NAME': os.environ.get('DATABASE.NAME'),         # Database name
-    'USER': os.environ.get('DATABASE.USER'),               # PostgreSQL username
-    'PASSWORD': os.environ.get('DATABASE.PASSWORD'),           # PostgreSQL password
-    'HOST': os.environ.get('DATABASE.HOST'),      # Database server
-    'PORT': os.environ.get('DATABASE.PORT'),               # Database port (leave blank for default)
+    'NAME': os.environ.get('DATABASE__NAME'),         # Database name
+    'USER': os.environ.get('DATABASE__USER'),               # PostgreSQL username
+    'PASSWORD': os.environ.get('DATABASE__PASSWORD'),           # PostgreSQL password
+    'HOST': os.environ.get('DATABASE__HOST'),      # Database server
+    'PORT': os.environ.get('DATABASE__PORT'),               # Database port (leave blank for default)
     'CONN_MAX_AGE': 300,      # Max database connection age
 }
 
@@ -31,7 +31,7 @@ DATABASE = {
 # For optimal security, SECRET_KEY should be at least 50 characters in length and contain a mix of letters, numbers, and
 # symbols. PyInv will not run without this defined. For more information, see
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-SECRET_KEY
-SECRET_KEY = ''
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 #########################
 #                       #
@@ -52,7 +52,7 @@ BASE_PATH = ''
 # Set to True to enable server debugging. WARNING: Debugging introduces a substantial performance penalty and may reveal
 # sensitive information about your installation. Only enable debugging while performing testing. Never enable debugging
 # on a production system.
-DEBUG = False
+DEBUG = os.environ.get('DEBUG') if os.environ.get('DEBUG') is not None else False
 
 EMAIL: Dict[str, Union[str, int, bool]] = {
     # 'SERVER': '',
