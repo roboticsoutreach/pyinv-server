@@ -25,7 +25,10 @@ class Asset(models.Model):
     @property
     def display_name(self) -> str:
         try:
-            return self.node.name or str(f"{self.asset_model.display_name} ({self.first_asset_code})")
+            if self.node is not None and self.node.name is not None:
+                return str(f"{self.node.name} ({self.first_asset_code})")
+            else:
+                return str(f"{self.asset_model.display_name} ({self.first_asset_code})")
         except Asset.node.RelatedObjectDoesNotExist:
             return str(f"{self.asset_model.display_name} ({self.first_asset_code})")
 
